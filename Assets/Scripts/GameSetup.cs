@@ -9,11 +9,17 @@ public class GameSetup : MonoBehaviour
 {
     [SerializeField]
     GameObject[] walls;
+    GameObject floor;
     List<GameObject> courtWalls = new List<GameObject>();
     [SerializeField]
     GameObject SceneMesh, PongPassthrough, WorldPassthrough, Ball, BotPaddle, PlayerPaddle;
+    [SerializeField]
+    Material goalMaterial;
     GameObject Player;
+    float spawnHeight = 1f;
+    float goalOffset = 0.5f;
     bool usePassthrough = false;
+
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("MainCamera");
@@ -21,10 +27,11 @@ public class GameSetup : MonoBehaviour
     }
     IEnumerator GetWalls()
     {
-        while (walls.Length == 0)
+        while (walls.Length == 0 || floor == null)
         {
             yield return new WaitForSeconds(1);
             walls = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name.Contains("EffectMesh")).ToArray();
+            floor = GameObject.Find("FLOOR");
         }
         SetupWalls();
     }
@@ -42,13 +49,8 @@ public class GameSetup : MonoBehaviour
             wall.GetComponent<MeshRenderer>().enabled = false;
         }
     }
-    public void Test(GameObject wall)
+    public void SetupPong()
     {
-        Debug.Log("Test from " + wall.name);
-    }
-    public void SetupPong(GameObject wall)
-    {
-        Debug.Log("SetupPong from " + wall.name);
         foreach (RayInteractor interactor in FindObjectsByType<RayInteractor>(FindObjectsSortMode.None))
         {
             interactor.gameObject.SetActive(false);     //turn off pointers
@@ -62,12 +64,26 @@ public class GameSetup : MonoBehaviour
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, Player.transform.position).CompareTo(Vector3.Distance(b.transform.position, Player.transform.position)));
         //instantiate ball at the center of the court
-        Instantiate(Ball, (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2, Quaternion.identity);
+        Vector3 ballPos = (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2;
+        ballPos.y = floor.transform.position.y + spawnHeight;
+        Instantiate(Ball, ballPos, Quaternion.identity);
         //instantiate bot paddle 1 unit in front of the second wall, with the same rotation as the second wall
-        Instantiate(BotPaddle, courtWalls[1].transform.position + courtWalls[1].transform.forward * 1, courtWalls[1].transform.rotation);
+        Vector3 botPos = courtWalls[1].transform.position + courtWalls[1].transform.forward * 1;
+        botPos.y = floor.transform.position.y + spawnHeight;
+        Instantiate(BotPaddle, botPos, courtWalls[1].transform.rotation);
         //instantiate player paddle 1 unit in front of the first wall, with the same rotation as the first wall
-        Instantiate(PlayerPaddle, courtWalls[0].transform.position + courtWalls[0].transform.forward * 1, courtWalls[0].transform.rotation);
+        Vector3 playerPos = courtWalls[0].transform.position + courtWalls[0].transform.forward * 1;
+        playerPos.y = floor.transform.position.y + spawnHeight;
+        Instantiate(PlayerPaddle, playerPos, courtWalls[0].transform.rotation);
 
+        //set up goals
+        foreach (GameObject wall in courtWalls)
+        {
+            wall.GetComponent<MeshRenderer>().material = goalMaterial;
+            wall.transform.position += wall.transform.forward * goalOffset;
+        }
+        //start the game
+        GetComponent<GameManager>().StartGame();
     }
 
     // Define your handler methods
@@ -104,7 +120,7 @@ public class GameSetup : MonoBehaviour
         courtWalls.Add(wall);
         if (courtWalls.Count == 2)
         {
-            SetupPong(wall);
+            SetupPong();
         }
     }
 }
