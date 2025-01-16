@@ -6,14 +6,13 @@ public class GameManager : MonoBehaviour
 {
     GameObject ball, botPaddle, playerPaddle, playerGoal, botGoal;
     [SerializeField] float kickForce = 1;
-
+    [SerializeField] float bounceBoostForce = 2;
+    [SerializeField] float paddleBoostForce = 3;
     Vector3 ballStartPos;
     void Start()
     {
 
     }
-
-    // Update is called once per frame
     void Update()
     {
 
@@ -27,8 +26,7 @@ public class GameManager : MonoBehaviour
         playerGoal = _playerGoal;
         botGoal = _botGoal;
         ballStartPos = ball.transform.position;
-        botPaddle.SetActive(true);
-        botPaddle.GetComponent<PaddleBot>().StartBot(ball);
+        botPaddle.GetComponent<PaddleBot>().StartBot(ball, botGoal.GetComponent<MeshFilter>().mesh);
         ball.GetComponent<Ball>().Initialize(this);
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), 1f));
     }
@@ -39,16 +37,19 @@ public class GameManager : MonoBehaviour
         if (collision.gameObject == playerGoal)
         {
             Debug.Log("Bot scored!");
-            //ResetBall();
+            ResetBall();
         }
         else if (collision.gameObject == botGoal)
         {
             Debug.Log("Player scored!");
-            //ResetBall();
+            ResetBall();
         }
         else
         {
             Debug.Log("Ball collided with: " + collision.gameObject.name);
+            Vector3 normal = collision.contacts[0].normal;
+            float force = collision.gameObject.CompareTag("Paddle") ? paddleBoostForce : bounceBoostForce;
+            ball.GetComponent<Rigidbody>().AddForce(normal * force, ForceMode.Impulse);
         }
     }
     void ResetBall()
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviour
             new Vector3(-1, -1, -1)
         };
         Vector3 kickAngle = corners[Random.Range(0, corners.Length)].normalized;
-        //rb.AddForce(kickAngle * kickForce, ForceMode.Impulse);
-        rb.AddForce(new Vector3(0, 0, 1) * kickForce, ForceMode.Impulse);
+        rb.AddForce(kickAngle * kickForce, ForceMode.Impulse);
+        //rb.AddForce(new Vector3(0, 0, 1) * kickForce, ForceMode.Impulse);
     }
 }

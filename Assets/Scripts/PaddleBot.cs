@@ -4,15 +4,22 @@ using System.Collections;
 public class PaddleBot : MonoBehaviour
 {
     GameObject ball;
-    [SerializeField] float speed = 1;
     private Vector3 initialPosition;
     private Quaternion initialRotation;
+    private float paddleSpeed;
+    float xMax, xMin, yMax, yMin;
 
-    public void StartBot(GameObject _ball)
+    public void StartBot(GameObject _ball, Mesh boundsMesh)
     {
         ball = _ball;
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+        paddleSpeed = PlayerPrefs.GetFloat("PaddleSpeed", 1f);
+
+        xMax = boundsMesh.bounds.max.x;
+        xMin = boundsMesh.bounds.min.x;
+        yMax = boundsMesh.bounds.max.y;
+        yMin = boundsMesh.bounds.min.y;
     }
 
     void Update()
@@ -27,9 +34,9 @@ public class PaddleBot : MonoBehaviour
 
             // Calculate the target position while maintaining the original position along the plane's normal
             Vector3 targetPos = transform.position + projectedDirection;
-
+            //todo: clamp targetPos to bounds
             // Move towards the projected point
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, paddleSpeed * Time.deltaTime);
         }
     }
 }

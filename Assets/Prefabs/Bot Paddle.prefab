@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7893074700433840593, guid: 78af509a1c7837442b32d0703f4cdc91, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a4c3a98a13251e94b84cb5196661105b, type: 2}
     - target: {fileID: 7988294076684299521, guid: 78af509a1c7837442b32d0703f4cdc91, type: 3}
       propertyPath: _rigidbody
       value: 
@@ -94,4 +98,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed4f48c9c9381b447a5f9b96bf8818aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
