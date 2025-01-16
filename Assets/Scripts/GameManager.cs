@@ -1,8 +1,13 @@
+using System.Collections;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    GameObject ball, botPaddle, playerPaddle, playerGoal, botGoal;
+    [SerializeField] float kickForce = 1;
+
+    Vector3 ballStartPos;
     void Start()
     {
 
@@ -14,8 +19,68 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void StartGame()
+    public void StartGame(GameObject _ball, GameObject _playerPaddle, GameObject _botPaddle, GameObject _playerGoal, GameObject _botGoal)
     {
-        //start the game
+        ball = _ball;
+        botPaddle = _botPaddle;
+        playerPaddle = _playerPaddle;
+        playerGoal = _playerGoal;
+        botGoal = _botGoal;
+        ballStartPos = ball.transform.position;
+        botPaddle.SetActive(true);
+        botPaddle.GetComponent<PaddleBot>().StartBot(ball);
+        ball.GetComponent<Ball>().Initialize(this);
+        StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), 1f));
+    }
+
+
+    public void OnBallCollision(Collision collision)
+    {
+        if (collision.gameObject == playerGoal)
+        {
+            Debug.Log("Bot scored!");
+            //ResetBall();
+        }
+        else if (collision.gameObject == botGoal)
+        {
+            Debug.Log("Player scored!");
+            //ResetBall();
+        }
+        else
+        {
+            Debug.Log("Ball collided with: " + collision.gameObject.name);
+        }
+    }
+    void ResetBall()
+    {
+        ball.transform.position = ballStartPos;
+        ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), 1f));
+    }
+    [Button]
+    void IncreaseBallSpeed()
+    {
+        if (ball != null)
+        {
+            Rigidbody rb = ball.GetComponent<Rigidbody>();
+            rb.linearVelocity *= 5f;
+        }
+    }
+    IEnumerator KickAfterDelay(Rigidbody rb, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Vector3[] corners = new Vector3[] {
+            new Vector3(1, 1, 1),
+            new Vector3(1, 1, -1),
+            new Vector3(1, -1, 1),
+            new Vector3(1, -1, -1),
+            new Vector3(-1, 1, 1),
+            new Vector3(-1, 1, -1),
+            new Vector3(-1, -1, 1),
+            new Vector3(-1, -1, -1)
+        };
+        Vector3 kickAngle = corners[Random.Range(0, corners.Length)].normalized;
+        //rb.AddForce(kickAngle * kickForce, ForceMode.Impulse);
+        rb.AddForce(new Vector3(0, 0, 1) * kickForce, ForceMode.Impulse);
     }
 }

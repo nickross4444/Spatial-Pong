@@ -1,3 +1,4 @@
+#define DEBUG
 using System.Linq;
 using UnityEngine;
 using System.Collections;
@@ -12,7 +13,7 @@ public class GameSetup : MonoBehaviour
     GameObject floor;
     List<GameObject> courtWalls = new List<GameObject>();
     [SerializeField]
-    GameObject SceneMesh, PongPassthrough, WorldPassthrough, Ball, BotPaddle, PlayerPaddle;
+    GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial;
     GameObject Player;
@@ -63,18 +64,28 @@ public class GameSetup : MonoBehaviour
         SceneMesh.SetActive(true);
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, Player.transform.position).CompareTo(Vector3.Distance(b.transform.position, Player.transform.position)));
+#if DEBUG
+        //spawn ball and paddle right in front of the player
+        Vector3 ballPos = Player.transform.position + Player.transform.forward * 0.5f;
+        ballPos.y = floor.transform.position.y + spawnHeight;
+        ball = Instantiate(ball, ballPos, Quaternion.identity);
+        Vector3 paddlePos = ballPos - Player.transform.forward * 0.1f;
+        paddlePos.y = floor.transform.position.y + spawnHeight;
+        botPaddle = Instantiate(botPaddle, paddlePos, Player.transform.rotation);
+#else
         //instantiate ball at the center of the court
         Vector3 ballPos = (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2;
         ballPos.y = floor.transform.position.y + spawnHeight;
-        Instantiate(Ball, ballPos, Quaternion.identity);
+        ball = Instantiate(ball, ballPos, Quaternion.identity);
         //instantiate bot paddle 1 unit in front of the second wall, with the same rotation as the second wall
         Vector3 botPos = courtWalls[1].transform.position + courtWalls[1].transform.forward * 1;
         botPos.y = floor.transform.position.y + spawnHeight;
-        Instantiate(BotPaddle, botPos, courtWalls[1].transform.rotation);
+        botPaddle = Instantiate(botPaddle, botPos, courtWalls[1].transform.rotation);
+#endif
         //instantiate player paddle 1 unit in front of the first wall, with the same rotation as the first wall
         Vector3 playerPos = courtWalls[0].transform.position + courtWalls[0].transform.forward * 1;
         playerPos.y = floor.transform.position.y + spawnHeight;
-        Instantiate(PlayerPaddle, playerPos, courtWalls[0].transform.rotation);
+        playerPaddle = Instantiate(playerPaddle, playerPos, courtWalls[0].transform.rotation);
 
         //set up goals
         foreach (GameObject wall in courtWalls)
@@ -83,7 +94,7 @@ public class GameSetup : MonoBehaviour
             wall.transform.position += wall.transform.forward * goalOffset;
         }
         //start the game
-        GetComponent<GameManager>().StartGame();
+        GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
     }
 
     // Define your handler methods

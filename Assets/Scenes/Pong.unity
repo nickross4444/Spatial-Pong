@@ -20882,9 +20882,9 @@ MonoBehaviour:
   SceneMesh: {fileID: 1572365082}
   PongPassthrough: {fileID: 88328837}
   WorldPassthrough: {fileID: 1036416441}
-  Ball: {fileID: 6906628618391375677, guid: 56ead93c690f7d94dbf66838749b12c3, type: 3}
-  BotPaddle: {fileID: 8130977853510843052, guid: 76d1b0b73c725504f8d3f03e6a2cb38c, type: 3}
-  PlayerPaddle: {fileID: 1411374496820942510, guid: 78af509a1c7837442b32d0703f4cdc91, type: 3}
+  ball: {fileID: 6906628618391375677, guid: 56ead93c690f7d94dbf66838749b12c3, type: 3}
+  botPaddle: {fileID: 8130977853510843052, guid: 76d1b0b73c725504f8d3f03e6a2cb38c, type: 3}
+  playerPaddle: {fileID: 1411374496820942510, guid: 78af509a1c7837442b32d0703f4cdc91, type: 3}
   goalMaterial: {fileID: 2100000, guid: fc44d4f8533e71f4aa4a1c0f342cc449, type: 2}
 --- !u!114 &1811781809
 MonoBehaviour:
@@ -20898,6 +20898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446b3a8a7f3981743b7edc90f338b4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  kickForce: 2
 --- !u!1 &1812078290
 GameObject:
   m_ObjectHideFlags: 0
