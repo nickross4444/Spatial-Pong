@@ -121,7 +121,11 @@ public class GameSetup : MonoBehaviour
         MeshRenderer renderer = wall.GetComponent<MeshRenderer>();
         if (renderer != null && !courtWalls.Contains(wall))
         {
-            renderer.enabled = false;
+            RayInteractable rayInteractable = wall.GetComponent<RayInteractable>();
+            if (rayInteractable.Interactors.Count == 0)     //only hide if not being interacted with by another hand
+            {
+                renderer.enabled = false;
+            }
         }
     }
 
