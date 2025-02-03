@@ -96,7 +96,7 @@ public class GameSetup : MonoBehaviour
         GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
     }
 
-    // Define your handler methods
+    // Define handler methods
     private void HandleStateChanged(PointerEvent args, GameObject wall)
     {
         switch (args.Type)
@@ -143,5 +143,6 @@ public class GameSetup : MonoBehaviour
     {
         wall.GetComponent<MeshRenderer>().material = goalMaterial;
         wall.transform.position += wall.transform.forward * goalOffset;
+        wall.tag = "Goal";
     }
 }

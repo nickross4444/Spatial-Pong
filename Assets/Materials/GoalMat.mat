@@ -41,7 +41,7 @@ Material:
     m_TexEnvs:
     - _BaseEmissionTexture:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.2, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
@@ -88,7 +88,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ScanlineTexture:
-        m_Texture: {fileID: 2800000, guid: 7c16822fb62a9794c938db2f6814c234, type: 3}
+        m_Texture: {fileID: 2800000, guid: cc34a97386abf674f8fe8cfc98be5706, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
