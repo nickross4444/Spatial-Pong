@@ -21,8 +21,9 @@ public class GameSetup : MonoBehaviour
     float goalOffset = 0.25f;
     float playerPaddleOffset = 1.15f;
     float botPaddleOffset = 1f;
-    float paddleSpeed = 1f;
-    bool usePassthrough = false;
+    float paddleSpeed = 2f;
+    [SerializeField]
+    bool usePassthrough = true;
 
     void Start()
     {

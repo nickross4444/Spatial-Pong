@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour
 {
     GameObject ball, botPaddle, playerPaddle, playerGoal, botGoal;
     [SerializeField] float kickForce = 1;
-    [SerializeField] float bounceBoostForce = 2;
-    [SerializeField] float paddleBoostForce = 3;
+    [SerializeField] float bounceBoostSpeed = 1.02f;
+    [SerializeField] float paddleBoostSpeed = 1.1f;
     Vector3 ballStartPos;
     void Start()
     {
@@ -47,9 +47,10 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("Ball collided with: " + collision.gameObject.name);
-            Vector3 normal = collision.contacts[0].normal;
-            float force = collision.gameObject.CompareTag("Paddle") ? paddleBoostForce : bounceBoostForce;
-            ball.GetComponent<Rigidbody>().AddForce(normal * force, ForceMode.Impulse);
+            //Vector3 normal = collision.contacts[0].normal;
+            //float force = collision.gameObject.CompareTag("Paddle") ? paddleBoostForce : bounceBoostForce;
+            //ball.GetComponent<Rigidbody>().AddForce(normal * force, ForceMode.Impulse);
+            ball.GetComponent<Rigidbody>().linearVelocity *= collision.gameObject.CompareTag("Paddle") ? paddleBoostSpeed : bounceBoostSpeed;
         }
     }
     void ResetBall()
