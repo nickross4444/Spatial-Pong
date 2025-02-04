@@ -57,6 +57,10 @@ PrefabInstance:
       value: MeshVolume Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8999845180316542267, guid: 2d6ac3b9dfc2b44458e32bd44afc2cfa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8999845180316542267, guid: 2d6ac3b9dfc2b44458e32bd44afc2cfa, type: 3}
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
