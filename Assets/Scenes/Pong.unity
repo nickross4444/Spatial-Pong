@@ -1228,6 +1228,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1563018081}
     m_Modifications:
+    - target: {fileID: 4865299466473155954, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281972314106466339, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5737903612183069454, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
       propertyPath: m_Name
       value: Settings
@@ -18183,6 +18191,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1563018081}
     m_Modifications:
+    - target: {fileID: 2624813893948051212, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: instanceId
+      value: ad0ae164-aa51-46b0-980a-92cff0ae1777
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800391797412275429, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: instanceId
+      value: acd19257-8664-46e1-8c8c-cf4ba59d9b05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865299466473155954, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281972314106466339, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5476161630169400584, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -26035,6 +26059,22 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 866176682}
+    - target: {fileID: 2624813893948051212, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: instanceId
+      value: dc69c42f-f397-4f76-9861-791a1328e110
+      objectReference: {fileID: 0}
+    - target: {fileID: 4800391797412275429, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: instanceId
+      value: 36395cb4-f6c6-467f-9542-4d287e996eb5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865299466473155954, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5281972314106466339, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5476161630169400584, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
       value: 3

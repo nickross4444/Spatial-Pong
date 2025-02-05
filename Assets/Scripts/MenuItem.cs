@@ -11,6 +11,8 @@ public class MenuItem : MonoBehaviour
     [SerializeField] float scaleOnSelect = 0.9f;
     [SerializeField] float scaleTime = 0.1f;
     [SerializeField] GameObject mesh;
+    [SerializeField] AudioClip onSelectSound, onHoverSound, onUnhoverSound, onClickSound;
+    AudioSource audioSource;
     MeshRenderer meshRenderer;
     Vector3 originalScale;
     Color originalEmissionColor;
@@ -21,8 +23,10 @@ public class MenuItem : MonoBehaviour
     {
         pointable = GetComponentInChildren<IPointable>();
         meshRenderer = mesh.GetComponent<MeshRenderer>();
+        audioSource = GetComponentInChildren<AudioSource>();
     }
     void Start()
+
     {
         pointable.WhenPointerEventRaised += OnPointerEventRaised;
         originalEmissionColor = meshRenderer.material.GetColor(EmissionProperty);
@@ -37,14 +41,18 @@ public class MenuItem : MonoBehaviour
                 Color hoverColor = originalEmissionColor;
                 hoverColor.a += alphaAdditionOnHover / 255f;
                 meshRenderer.material.SetColor(EmissionProperty, hoverColor);
+                audioSource.PlayOneShot(onHoverSound);
                 break;
             case PointerEventType.Unhover:
                 meshRenderer.material.SetColor(EmissionProperty, originalEmissionColor);
+                audioSource.PlayOneShot(onUnhoverSound);
                 break;
             case PointerEventType.Select:
                 ScaleTo(scaleOnSelect);
+                audioSource.PlayOneShot(onSelectSound);
                 break;
             case PointerEventType.Unselect:
+                audioSource.PlayOneShot(onClickSound);
                 ScaleTo(1f, () => onClick.Invoke());
                 break;
         }
