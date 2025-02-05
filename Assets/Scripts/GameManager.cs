@@ -85,4 +85,15 @@ public class GameManager : MonoBehaviour
         rb.AddForce(kickAngle * kickForce, ForceMode.Impulse);
         //rb.AddForce(new Vector3(0, 0, 1) * kickForce, ForceMode.Impulse);
     }
+    public void QuitApp()
+    {
+        //!!TODO: add a fade to black here
+        Application.Quit();
+    }
+    public void StartGame()
+    {
+        GameSetup gameSetup = GetComponent<GameSetup>();
+        gameSetup.SetupWalls();
+    }
+
 }
