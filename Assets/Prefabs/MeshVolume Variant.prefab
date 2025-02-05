@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: 6822569076625446923, guid: 2d6ac3b9dfc2b44458e32bd44afc2cfa, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: a1c7a59e6dbbffd4789d6579f1b4a40c, type: 2}
+      objectReference: {fileID: 2100000, guid: 96192f9bfa03c4244bca213a86f4d563, type: 2}
     - target: {fileID: 8999845180316542267, guid: 2d6ac3b9dfc2b44458e32bd44afc2cfa, type: 3}
       propertyPath: m_Name
       value: MeshVolume Variant
