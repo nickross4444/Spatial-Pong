@@ -181,6 +181,7 @@ GameObject:
   - component: {fileID: 1723269166174523040}
   - component: {fileID: 8055863153609963818}
   - component: {fileID: 8897694379459012196}
+  - component: {fileID: -840748131416573464}
   m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
@@ -321,3 +322,16 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &-840748131416573464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6906628618391375677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a3075dba42494408ca52fb24cd8e4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleEffectPrefab: {fileID: 924061431169705747, guid: 5b263d23e64b23544955ee2ade3d66f9, type: 3}
