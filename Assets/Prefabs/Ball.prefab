@@ -334,4 +334,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a3075dba42494408ca52fb24cd8e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleEffectPrefab: {fileID: 924061431169705747, guid: 5b263d23e64b23544955ee2ade3d66f9, type: 3}
+  wallHitEffectPrefab: {fileID: 924061431169705747, guid: 5b263d23e64b23544955ee2ade3d66f9, type: 3}
+  goalHitEffectPrefab: {fileID: 1669708381309912167, guid: 6935bf30db9cfd140b7c5d480da252ae, type: 3}
