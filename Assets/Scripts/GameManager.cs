@@ -1,6 +1,7 @@
 using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +9,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] float kickForce = 1;
     [SerializeField] float bounceBoostSpeed = 1.02f;
     [SerializeField] float paddleBoostSpeed = 1.1f;
+    [SerializeField] int playerScore = 0;
+    [SerializeField] int botScore = 0;
+    public int PlayerScore => playerScore;      //this allows public access, but private set, while staying serializable
+    public int BotScore => botScore;
+    int maxScore = 11;
     Vector3 ballStartPos;
+
+    [Header("Win Events")]
+    public UnityEvent onPlayerWin;
+    public UnityEvent onBotWin;
+
     void Start()
     {
 
@@ -31,17 +42,18 @@ public class GameManager : MonoBehaviour
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), 1f));
     }
 
-
     public void OnBallCollision(Collision collision)
     {
         if (collision.gameObject == playerGoal)
         {
             Debug.Log("Bot scored!");
+            botScore++;
             ResetBall();
         }
         else if (collision.gameObject == botGoal)
         {
             Debug.Log("Player scored!");
+            playerScore++;
             ResetBall();
         }
         else
@@ -51,6 +63,16 @@ public class GameManager : MonoBehaviour
             //float force = collision.gameObject.CompareTag("Paddle") ? paddleBoostForce : bounceBoostForce;
             //ball.GetComponent<Rigidbody>().AddForce(normal * force, ForceMode.Impulse);
             ball.GetComponent<Rigidbody>().linearVelocity *= collision.gameObject.CompareTag("Paddle") ? paddleBoostSpeed : bounceBoostSpeed;
+        }
+        if (playerScore == maxScore)
+        {
+            Debug.Log("Player wins!");
+            onPlayerWin?.Invoke();
+        }
+        else if (botScore == maxScore)
+        {
+            Debug.Log("Bot wins!");
+            onBotWin?.Invoke();
         }
     }
     void ResetBall()
