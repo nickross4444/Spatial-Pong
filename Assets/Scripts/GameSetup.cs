@@ -16,6 +16,10 @@ public class GameSetup : MonoBehaviour
     GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
+
+    [SerializeField]
+    Transition sceneMeshTransition;
+
     GameObject player;
     float spawnHeight = 1f;
     float goalOffset = 0.25f;
@@ -58,6 +62,12 @@ public class GameSetup : MonoBehaviour
             wall.GetComponent<MeshRenderer>().enabled = false;
         }
     }
+
+
+    IEnumerator WaitforSceneMeshTrasition() 
+    {
+        yield return new WaitForSeconds (5);
+    }
     public void SetupPong()
     {
         //foreach (RayInteractor interactor in FindObjectsByType<RayInteractor>(FindObjectsSortMode.None))
@@ -68,6 +78,10 @@ public class GameSetup : MonoBehaviour
         PongPassthrough.SetActive(usePassthrough);
 
         SceneMesh.SetActive(true);
+
+        //sceneMeshTransition.isChanging = true;
+        //StartCoroutine(WaitforSceneMeshTrasition());
+
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position).CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
         //create paddlePlane

@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &829584736089341193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 829584736089341195}
+  - component: {fileID: 829584736089341194}
+  - component: {fileID: 829584736089341428}
+  - component: {fileID: 5369269147752480324}
+  m_Layer: 0
+  m_Name: FadingTransitions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &829584736089341195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829584736089341193}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &829584736089341194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829584736089341193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7968500d0b70344f83852d79e338771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surfaceType: 0
+  fadingCentre: 0
+  transitionSpread: 2
+  ScreenNoiseTexture: {fileID: 2800000, guid: 7f344d9f74a913a48add0c0b546a99f8, type: 3}
+  noiseTexture3D: {fileID: 11700000, guid: ba30e7fa280dad84eba988619c230971, type: 2}
+  noiseTriplanar2D: {fileID: 2800000, guid: d177a6968453bb24ebf638c2477db1f6, type: 3}
+  useTriplanarNoise: 0
+  transitionTexture: {fileID: 2800000, guid: f0dc009785665dc4f8d32b38e28f0913, type: 3}
+  gradientOption:
+    useGradient: 0
+    transitionGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 0.96199095, g: 0.96199095, b: 0.96199095, a: 1}
+      key2: {r: 1, g: 0.94832873, b: 0, a: 0.99607843}
+      key3: {r: 0.83137256, g: 0.29602638, b: 0.12941177, a: 0}
+      key4: {r: 1, g: 1, b: 1, a: 0}
+      key5: {r: 0.83137256, g: 0.29602638, b: 0.12941177, a: 0}
+      key6: {r: 1, g: 1, b: 1, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 32715
+      ctime3: 43968
+      ctime4: 62201
+      ctime5: 48240
+      ctime6: 63034
+      ctime7: 0
+      atime0: 0
+      atime1: 25943
+      atime2: 34903
+      atime3: 65535
+      atime4: 65535
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 4
+    gradientChanged: 1
+    texturePath: WorldSpaceTransitions/fading/textures/
+    filename: _gradient
+  ringsOption:
+    useRings: 1
+    count: 13.4
+    offset: 0
+  radius: 3
+  distance: 4.069094
+  noiseScaleWorld: 1
+  noiseScaleScreen: 5
+--- !u!114 &829584736089341428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829584736089341193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e79b9ae4477ec94f8b905aebfd60bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitionMaterials:
+  - {fileID: 2100000, guid: 482a36ce52a352f46a952614d86ff0e8, type: 2}
+  - {fileID: 2100000, guid: 2a33b015e37c27b4fa65b0550a7d378d, type: 2}
+  radiusOrDistanceSlider: {fileID: 0}
+  radiusOrDistanceValueText: {fileID: 0}
+  radiusOrDistanceTitle: {fileID: 0}
+  spreadSlider: {fileID: 0}
+  invertToggle: {fileID: 0}
+  spreadValue: {fileID: 0}
+  noiseScaleWorldSpaceSlider: {fileID: 0}
+  noiseScaleWorldSpaceVal: {fileID: 0}
+  noiseScaleScreenSpaceSlider: {fileID: 0}
+  noiseScaleScreenSpaceVal: {fileID: 0}
+  surfaceDropdown: {fileID: 0}
+  orientationDropdown: {fileID: 0}
+  materialDropdown: {fileID: 0}
+  triplanarMappingToggle: {fileID: 0}
+  screenspaceTextures: {fileID: 0}
+  _3DTextures: {fileID: 0}
+  triplanarTextures: {fileID: 0}
+--- !u!111 &5369269147752480324
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829584736089341193}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
