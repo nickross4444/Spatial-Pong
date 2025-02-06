@@ -24,6 +24,9 @@ public class GameSetup : MonoBehaviour
     float paddleSpeed = 2f;
     [SerializeField]
     bool usePassthrough = true;
+    
+    [SerializeField] private GameObject scoreboardPrefab;
+    private ScoreboardDisplay scoreboardInstance;
 
     void Start()
     {
@@ -91,6 +94,15 @@ public class GameSetup : MonoBehaviour
         Vector3 botPos = courtWalls[1].transform.position + courtWalls[1].transform.forward * botPaddleOffset;
         botPos.y = floor.transform.position.y + spawnHeight;
         botPaddle = Instantiate(botPaddle, botPos, courtWalls[1].transform.rotation);
+        
+        // Create and initialize the scoreboard
+        GameObject scoreboardObj = Instantiate(scoreboardPrefab);
+        scoreboardInstance = scoreboardObj.GetComponent<ScoreboardDisplay>();
+        
+        // Initialize the game manager with the scoreboard
+        GameManager gameManager = GetComponent<GameManager>();
+        gameManager.InitializeScoreboard(scoreboardInstance);
+        
         //start the game
         paddlePlaneComponent.Initialize(playerPaddle);
         GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);

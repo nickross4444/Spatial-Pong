@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
     int maxScore = 11;
     Vector3 ballStartPos;
 
+    private ScoreboardDisplay scoreboard;
+    
     [Header("Win Events")]
     public UnityEvent onPlayerWin;
     public UnityEvent onBotWin;
@@ -28,6 +30,8 @@ public class GameManager : MonoBehaviour
     {
 
     }
+    
+    
 
     public void StartGame(GameObject _ball, GameObject _playerPaddle, GameObject _botPaddle, GameObject _playerGoal, GameObject _botGoal)
     {
@@ -42,18 +46,25 @@ public class GameManager : MonoBehaviour
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), 1f));
     }
 
+    public void InitializeScoreboard(ScoreboardDisplay scoreboardDisplay)
+    {
+        scoreboard = scoreboardDisplay;
+        scoreboard.UpdateScore(playerScore, botScore);
+    }
     public void OnBallCollision(Collision collision)
     {
         if (collision.gameObject == playerGoal)
         {
             Debug.Log("Bot scored!");
             botScore++;
+            scoreboard.UpdateScore(playerScore, botScore);
             ResetBall();
         }
         else if (collision.gameObject == botGoal)
         {
             Debug.Log("Player scored!");
             playerScore++;
+            scoreboard.UpdateScore(playerScore, botScore);
             ResetBall();
         }
         else
