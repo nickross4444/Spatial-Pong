@@ -18138,7 +18138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnOnStart: 1
-  MeshMaterial: {fileID: 2100000, guid: 9e053f3b319d5964ebc94e9a4c516165, type: 2}
+  MeshMaterial: {fileID: 2100000, guid: 2c104e7cfc1eb7a43b0010f76b71d295, type: 2}
   Colliders: 1
   CutHoles: 0
   castShadows: 1

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wireframe
-  m_Shader: {fileID: 4800000, guid: 8143d77e305dc8246a787da1d9eae4ba, type: 3}
+  m_Name: RoomMaterial
+  m_Shader: {fileID: 4800000, guid: bce1566a07ad12a4da3fb5af91f7a4ba, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,16 +24,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 2800000, guid: 5f87d949070248546b9cf04f29d1f8cd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.5
-    - _GridLineThickness: 0.003
-    - _GridSize: 0.1
-    - _Intensity: 0
+    - _BlendSharpness: 30
+    - _TileSize: 0.2
     m_Colors:
-    - _GridColour: {r: 0.255, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
+    - _WireframeColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
