@@ -1,4 +1,4 @@
-Shader "Custom/BottomToTopRevealWithWireframe"
+Shader "Custom/SceneMeshGridTransition"
 {
     Properties
     {
