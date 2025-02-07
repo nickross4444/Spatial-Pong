@@ -16,8 +16,7 @@ public class GameSetup : MonoBehaviour
     GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
-    [SerializeField]
-    Transition sceneMeshTrasition;
+    
 
     GameObject player;
     float spawnHeight = 1f;
@@ -74,7 +73,7 @@ public class GameSetup : MonoBehaviour
 
         SceneMesh.SetActive(true);
 
-        sceneMeshTrasition.OnStartTransition.Invoke();
+        
 
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position).CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
