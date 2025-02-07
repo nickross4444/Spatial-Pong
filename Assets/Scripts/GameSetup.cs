@@ -27,7 +27,14 @@ public class GameSetup : MonoBehaviour
     float paddleSpeed = 2f;
     [SerializeField]
     bool usePassthrough = true;
-    AudioSource wallAudio;
+    [SerializeField]
+    float gameStartDelay = 3f;
+    AudioSource SetupAudioSource;
+    [Header("Audio")]
+    [SerializeField] AudioClip wallSelectAudio;
+    [SerializeField] AudioClip wallHoverAudio;
+    [SerializeField] AudioClip courtSpawnAudio;
+
 
     void Start()
     {
@@ -37,13 +44,13 @@ public class GameSetup : MonoBehaviour
         StartCoroutine(GetWalls());
         // Set default paddle speed if not already set
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
-        wallAudio = GetComponent<AudioSource>();
+        SetupAudioSource = GetComponent<AudioSource>();
     }
-    IEnumerator GetWalls()
+    public IEnumerator GetWalls()
     {
         while (walls.Length == 0 || floor == null)
         {
-            yield return new WaitForSeconds(1);
+            yield return null;
             walls = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name.Contains("EffectMesh")).ToArray();
             floor = GameObject.Find("FLOOR");
         }
@@ -51,10 +58,8 @@ public class GameSetup : MonoBehaviour
         {
             wall.GetComponent<MeshRenderer>().enabled = false;
         }
-        //SetupWalls();
     }
     public void SetupWalls()
-
     {
         foreach (GameObject wall in walls)
         {
@@ -69,7 +74,6 @@ public class GameSetup : MonoBehaviour
     }
     public void SetupPong()
     {
-        SceneMesh.SetActive(true);
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position).CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
         //create paddlePlane
@@ -96,9 +100,12 @@ public class GameSetup : MonoBehaviour
         //start the game
         paddlePlaneComponent.Initialize(playerPaddle);
         AfterWallSetup.Invoke();
-        StartCoroutine(CallTransitionWhenReady());
-        GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
+        SetPongPassthrough(true);
+        SetupAudioSource.PlayOneShot(courtSpawnAudio);
+        StartCoroutine(StartBallAfterDelay());
     }
+
+
 
     IEnumerator CallTransitionWhenReady()
     {
@@ -109,8 +116,14 @@ public class GameSetup : MonoBehaviour
             transitionComponent = FindFirstObjectByType<Transition>();
             yield return null;
         } while (transitionComponent == null);
-        transitionComponent.StartTransition(() => SetPongPassthrough(true));        //set passthrough to true after transition is complete
+        transitionComponent.StartTransition(() => SetupPong());        //set passthrough to true after transition is complete
     }
+    IEnumerator StartBallAfterDelay()
+    {
+        yield return new WaitForSeconds(gameStartDelay);
+        GetComponent<GameManager>().StartBall(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
+    }
+
 
 
     void SetPongPassthrough(bool active)
@@ -136,8 +149,10 @@ public class GameSetup : MonoBehaviour
         if (courtWalls.Count < 2 && renderer != null && !courtWalls.Contains(wall))
         {
             renderer.enabled = true;
+            SetupAudioSource.PlayOneShot(wallHoverAudio);
         }
     }
+
 
     private void OnUnhover(GameObject wall)
     {
@@ -160,9 +175,8 @@ public class GameSetup : MonoBehaviour
             MakeGoal(wall);
             if (courtWalls.Count == 2)
             {
-                //RayInteractable rayInteractable = wall.GetComponent<RayInteractable>();
-                //rayInteractable.WhenPointerEventRaised -= (args) => HandleStateChanged(args, wall);
-                SetupPong();
+                SceneMesh.SetActive(true);
+                StartCoroutine(CallTransitionWhenReady());
             }
         }
     }
@@ -171,6 +185,6 @@ public class GameSetup : MonoBehaviour
         wall.GetComponent<MeshRenderer>().material = goalMaterial;
         wall.transform.position += wall.transform.forward * goalOffset;
         wall.tag = "Goal";
-        wallAudio.Play();
+        SetupAudioSource.PlayOneShot(wallSelectAudio);
     }
 }

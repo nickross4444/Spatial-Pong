@@ -21490,6 +21490,10 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   usePassthrough: 1
+  gameStartDelay: 2.5
+  wallSelectAudio: {fileID: 8300000, guid: ed9c7d3142c3dec4fac1f63cd819589f, type: 3}
+  wallHoverAudio: {fileID: 8300000, guid: 6d560a99d0105f34791ceeb05c2d7a23, type: 3}
+  courtSpawnAudio: {fileID: 8300000, guid: 7f0cfb6e4b79cb94caac00862730bc3e, type: 3}
 --- !u!114 &1811781809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21502,9 +21506,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446b3a8a7f3981743b7edc90f338b4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballKickDelay: 1
   kickForce: 2
   bounceBoostSpeed: 1.08
   paddleBoostSpeed: 1.15
+  playerScore: 0
+  botScore: 0
+  onPlayerWin:
+    m_PersistentCalls:
+      m_Calls: []
+  onBotWin:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &1811781810
 AudioSource:
   m_ObjectHideFlags: 0
@@ -21514,7 +21527,7 @@ AudioSource:
   m_GameObject: {fileID: 1811781806}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300001, guid: 063864c093e5598418c33fc6eafbd1a2, type: 2}
   m_audioClip: {fileID: 8300000, guid: 0ae074243bcbf57468d433ad4f78acbb, type: 3}
   m_Resource: {fileID: 8300000, guid: 0ae074243bcbf57468d433ad4f78acbb, type: 3}
   m_PlayOnAwake: 0
@@ -26215,7 +26228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5476161630169400584, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartGame
+      value: InitializeGame
       objectReference: {fileID: 0}
     - target: {fileID: 5476161630169400584, guid: ee440b207fa28974f96930613f7e44f4, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName

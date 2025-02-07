@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour
 {
     GameObject ball, botPaddle, playerPaddle, playerGoal, botGoal;
+    [SerializeField] float ballKickDelay = 1.5f;
     [SerializeField] float kickForce = 1;
     [SerializeField] float bounceBoostSpeed = 1.02f;
     [SerializeField] float paddleBoostSpeed = 1.1f;
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void StartGame(GameObject _ball, GameObject _playerPaddle, GameObject _botPaddle, GameObject _playerGoal, GameObject _botGoal)
+    public void StartBall(GameObject _ball, GameObject _playerPaddle, GameObject _botPaddle, GameObject _playerGoal, GameObject _botGoal)
     {
         ball = _ball;
         botPaddle = _botPaddle;
@@ -39,8 +40,9 @@ public class GameManager : MonoBehaviour
         ballStartPos = ball.transform.position;
         botPaddle.GetComponent<PaddleBot>().StartBot(ball, botGoal.GetComponent<MeshFilter>().mesh);
         ball.GetComponent<Ball>().Initialize(this);
-        StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), 1f));
+        StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
     }
+
 
     public void OnBallCollision(Collision collision)
     {
@@ -106,13 +108,15 @@ public class GameManager : MonoBehaviour
         Vector3 kickAngle = corners[Random.Range(0, corners.Length)].normalized;
         rb.AddForce(kickAngle * kickForce, ForceMode.Impulse);
         //rb.AddForce(new Vector3(0, 0, 1) * kickForce, ForceMode.Impulse);
+        ball.GetComponent<Ball>().audioSource.PlayOneShot(ball.GetComponent<Ball>().kickSound);
     }
     public void QuitApp()
+
     {
         //!!TODO: add a fade to black here
         Application.Quit();
     }
-    public void StartGame()
+    public void InitializeGame()
     {
         GameSetup gameSetup = GetComponent<GameSetup>();
         gameSetup.SetupWalls();

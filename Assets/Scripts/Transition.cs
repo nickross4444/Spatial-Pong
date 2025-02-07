@@ -38,7 +38,7 @@ public class Transition : MonoBehaviour
 
     IEnumerator TransitionCoroutine(System.Action OnTransitionComplete)
     {
-        while (transitionValue < 10)
+        while (transitionValue < 5)
         {
 
             transitionValue += revealSpeed * Time.deltaTime;
