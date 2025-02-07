@@ -17,8 +17,6 @@ public class Transition : MonoBehaviour
     void Update()
     {
        
-       
-
         if (isChanging && transitionValue < 10)
         {
             transitionValue = transitionValue + revealSpeed * Time.deltaTime;

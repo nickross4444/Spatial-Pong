@@ -28,7 +28,7 @@ Material:
   - _ALPHATEST_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 2
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap:
@@ -65,20 +65,20 @@ Material:
     - _AlphaToMask: 1
     - _Blend: 1
     - _BlendModePreserveSpecular: 1
-    - _BlendSharpness: 5
+    - _BlendSharpness: 1
     - _CastShadows: 1
     - _Cull: 2
     - _DstBlend: 0
     - _FadeSmoothness: 1
-    - _Height: 4.16
+    - _Height: 10
     - _Line_Thickness: 0.9
     - _QueueControl: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _TileSize: 1
-    - _Tiling: 1
+    - _TileSize: 5
+    - _Tiling: 5
     - _TransitionHeight: -5.7
     - _WorkflowMode: 1
     - _ZTest: 4
