@@ -14964,6 +14964,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 802784873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1314058255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1314058257}
+  - component: {fileID: 1314058256}
+  m_Layer: 0
+  m_Name: Scoreboard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1314058256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314058255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d01cffaab79d2c47819829754985aa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heightOffset: 2
+  distanceFromPlayer: 3
+  followPlayer: 1
+  scoreboardScale: 0.005
+--- !u!4 &1314058257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314058255}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1319250115
 GameObject:
   m_ObjectHideFlags: 0
@@ -20784,6 +20832,7 @@ GameObject:
   - component: {fileID: 1811781807}
   - component: {fileID: 1811781809}
   - component: {fileID: 1811781808}
+  - component: {fileID: 1811781810}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -20828,6 +20877,7 @@ MonoBehaviour:
   goalMaterial: {fileID: 2100000, guid: fc44d4f8533e71f4aa4a1c0f342cc449, type: 2}
   paddleControlAreaMaterial: {fileID: 2100000, guid: 141bb00bfb29e9345bdf43ea6599a768, type: 2}
   usePassthrough: 1
+  scoreboardPrefab: {fileID: 1314058255}
 --- !u!114 &1811781809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20843,6 +20893,30 @@ MonoBehaviour:
   kickForce: 2
   bounceBoostSpeed: 1.08
   paddleBoostSpeed: 1.15
+  playerScore: 0
+  botScore: 0
+  onPlayerWin:
+    m_PersistentCalls:
+      m_Calls: []
+  onBotWin:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1811781810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811781806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d01cffaab79d2c47819829754985aa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heightOffset: 2
+  distanceFromPlayer: 3
+  followPlayer: 1
+  scoreboardScale: 0.005
 --- !u!1 &1812078290
 GameObject:
   m_ObjectHideFlags: 0
@@ -25394,3 +25468,4 @@ SceneRoots:
   - {fileID: 88328840}
   - {fileID: 1036416444}
   - {fileID: 1811781807}
+  - {fileID: 1314058257}
