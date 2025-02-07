@@ -23,7 +23,7 @@ public class PaddlePlane : MonoBehaviour
 
     private void HandleStateChanged(InteractableStateChangeArgs args)
     {
-        if (args.NewState != InteractableState.Hover)
+        if (args.NewState != InteractableState.Hover && paddle != null)
         {
             targetPos = paddle.transform.position;
         }

@@ -69,13 +69,6 @@ public class GameSetup : MonoBehaviour
     }
     public void SetupPong()
     {
-        //foreach (RayInteractor interactor in FindObjectsByType<RayInteractor>(FindObjectsSortMode.None))
-        //{
-        //    interactor.gameObject.SetActive(false);     //turn off pointers
-        //}
-        WorldPassthrough.SetActive(false);
-        PongPassthrough.SetActive(usePassthrough);
-
         SceneMesh.SetActive(true);
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position).CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
@@ -103,7 +96,27 @@ public class GameSetup : MonoBehaviour
         //start the game
         paddlePlaneComponent.Initialize(playerPaddle);
         AfterWallSetup.Invoke();
+        StartCoroutine(CallTransitionWhenReady());
         GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
+    }
+
+    IEnumerator CallTransitionWhenReady()
+    {
+        //it takes some time for the scene mesh to be generated. This starts the transition when it's ready
+        Transition transitionComponent;
+        do
+        {
+            transitionComponent = FindFirstObjectByType<Transition>();
+            yield return null;
+        } while (transitionComponent == null);
+        transitionComponent.StartTransition(() => SetPongPassthrough(true));        //set passthrough to true after transition is complete
+    }
+
+
+    void SetPongPassthrough(bool active)
+    {
+        WorldPassthrough.SetActive(!active && usePassthrough);
+        PongPassthrough.SetActive(active && usePassthrough);
     }
 
     // Define handler methods
