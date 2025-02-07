@@ -16,6 +16,8 @@ public class GameSetup : MonoBehaviour
     GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
+    
+
     GameObject player;
     float spawnHeight = 1f;
     float goalOffset = 0.25f;
@@ -24,6 +26,7 @@ public class GameSetup : MonoBehaviour
     float paddleSpeed = 2f;
     [SerializeField]
     bool usePassthrough = true;
+    AudioSource wallAudio;
 
     void Start()
     {
@@ -33,6 +36,7 @@ public class GameSetup : MonoBehaviour
         StartCoroutine(GetWalls());
         // Set default paddle speed if not already set
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
+        wallAudio = GetComponent<AudioSource>();
     }
     IEnumerator GetWalls()
     {
@@ -68,6 +72,9 @@ public class GameSetup : MonoBehaviour
         PongPassthrough.SetActive(usePassthrough);
 
         SceneMesh.SetActive(true);
+
+        
+
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position).CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
         //create paddlePlane
@@ -148,5 +155,6 @@ public class GameSetup : MonoBehaviour
         wall.GetComponent<MeshRenderer>().material = goalMaterial;
         wall.transform.position += wall.transform.forward * goalOffset;
         wall.tag = "Goal";
+        wallAudio.Play();
     }
 }
