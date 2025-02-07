@@ -5,6 +5,7 @@ using Oculus.Interaction;
 using Oculus.Interaction.Surfaces;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 public class GameSetup : MonoBehaviour
 {
@@ -16,8 +17,8 @@ public class GameSetup : MonoBehaviour
     GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
-    
-
+    [SerializeField]
+    UnityEvent AfterWallSetup;
     GameObject player;
     float spawnHeight = 1f;
     float goalOffset = 0.25f;
@@ -46,9 +47,14 @@ public class GameSetup : MonoBehaviour
             walls = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name.Contains("EffectMesh")).ToArray();
             floor = GameObject.Find("FLOOR");
         }
-        SetupWalls();
+        foreach (GameObject wall in walls)
+        {
+            wall.GetComponent<MeshRenderer>().enabled = false;
+        }
+        //SetupWalls();
     }
-    void SetupWalls()
+    public void SetupWalls()
+
     {
         foreach (GameObject wall in walls)
         {
@@ -59,7 +65,6 @@ public class GameSetup : MonoBehaviour
 
             // Add event handlers
             rayInteractable.WhenPointerEventRaised += (args) => HandleStateChanged(args, wall);
-            wall.GetComponent<MeshRenderer>().enabled = false;
         }
     }
     public void SetupPong()
@@ -72,9 +77,6 @@ public class GameSetup : MonoBehaviour
         PongPassthrough.SetActive(usePassthrough);
 
         SceneMesh.SetActive(true);
-
-        
-
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position).CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
         //create paddlePlane
@@ -100,6 +102,7 @@ public class GameSetup : MonoBehaviour
         botPaddle = Instantiate(botPaddle, botPos, courtWalls[1].transform.rotation);
         //start the game
         paddlePlaneComponent.Initialize(playerPaddle);
+        AfterWallSetup.Invoke();
         GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
     }
 
