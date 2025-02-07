@@ -1,10 +1,10 @@
-Shader "Unlit/PongWireframeShaderRoomMeshTransition" {  
+Shader "Unlit/PongWireframeShaderRoomMeshTransition" {
   Properties {
     _WireframeColor("Wireframe Color", Color) = (1, 0, 0, 1)
     _Color("Base Color", Color) = (1, 1, 1, 1)
     _MainTex("Grid Texture", 2D) = "white" {}
     _TileSize("Tile Size", Float) = 1.0 // Controls grid scale
-    _BlendSharpness("Blend Sharpness", Float) = 5.0 // Triplanar blend sharpness
+    _BlendSharpness("Blend Sharpness", Float) = 3.0 // Adjusted for better blending
     _Height("Transition Height", Float) = 0.0 // Controls where transition occurs
     _FadeSmoothness("Fade Smoothness", Float) = 0.1 // Softens the transition
   }
@@ -52,12 +52,22 @@ Shader "Unlit/PongWireframeShaderRoomMeshTransition" {
       float triplanarTexture(float3 worldPos, float3 worldNormal, float tileSize) {
         float3 alignedPos = worldPos / tileSize;
         float3 absNormal = abs(worldNormal);
+        
+        // Normalize blending weights for better triplanar blending
         float3 blendWeights = pow(absNormal, _BlendSharpness);
-        blendWeights /= (blendWeights.x + blendWeights.y + blendWeights.z + 0.0001); // Normalize
+        blendWeights /= max(dot(blendWeights, float3(1,1,1)), 0.0001); 
 
-        float2 uvX = alignedPos.zy;
-        float2 uvY = alignedPos.xz;
-        float2 uvZ = alignedPos.xy;
+        // Correct UV mapping for grid texture
+        float2 uvX = alignedPos.zy * tileSize;
+        float2 uvY = alignedPos.xz * tileSize;
+        float2 uvZ = alignedPos.xy * tileSize;
+
+        // Force horizontal surfaces (floors) to use XZ plane mapping
+        if (abs(worldNormal.y) > 0.9) {
+            uvY = alignedPos.xz;
+            blendWeights.y = 1.0; // Ensure proper blending for floors
+            blendWeights.x = blendWeights.z = 0.0;
+        }
 
         float sampled =
             tex2D(_MainTex, uvX).r * blendWeights.x +
@@ -86,3 +96,4 @@ Shader "Unlit/PongWireframeShaderRoomMeshTransition" {
     }
   }
 }
+
