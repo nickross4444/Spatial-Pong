@@ -222,6 +222,7 @@ MonoBehaviour:
   goalSound: {fileID: 8300000, guid: 915b3e9300da7c94696f927e2c552304, type: 3}
   bounceSound: {fileID: 8300000, guid: c992ba26a9d38d34d9fdadfd65abee87, type: 3}
   paddleSound: {fileID: 8300000, guid: 6f7fea7f9599c22459c2839be2ca1a8b, type: 3}
+  kickSound: {fileID: 8300000, guid: c992ba26a9d38d34d9fdadfd65abee87, type: 3}
 --- !u!33 &4994945438282357209
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events; // Required for UnityEvent
@@ -7,7 +8,6 @@ public class Transition : MonoBehaviour
     private Material revealMaterial;
     public float revealSpeed = 1.5f;
     private float transitionValue = -5f;
-    public bool isChanging = false;
 
     // Define a UnityEvent for starting the transition
     public UnityEvent OnStartTransition;
@@ -20,28 +20,33 @@ public class Transition : MonoBehaviour
     private void OnEnable()
     {
         if (OnStartTransition != null)
-            OnStartTransition.AddListener(StartTransition);
+            OnStartTransition.AddListener(() => StartTransition());
     }
 
     private void OnDisable()
     {
         if (OnStartTransition != null)
-            OnStartTransition.RemoveListener(StartTransition);
+            OnStartTransition.RemoveListener(() => StartTransition());
     }
 
     // Public method to trigger the transition
-    public void StartTransition()
+    public void StartTransition(System.Action OnTransitionComplete = null)
     {
-        isChanging = true;
+        StartCoroutine(TransitionCoroutine(OnTransitionComplete));
     }
 
-    private void Update()
+
+    IEnumerator TransitionCoroutine(System.Action OnTransitionComplete)
     {
-        if (isChanging && transitionValue < 10)
+        while (transitionValue < 5)
         {
+
             transitionValue += revealSpeed * Time.deltaTime;
-            Debug.Log(transitionValue);
             revealMaterial.SetFloat("_Height", transitionValue);
+            yield return null;
         }
+        if (OnTransitionComplete != null)
+            OnTransitionComplete();
     }
 }
+
