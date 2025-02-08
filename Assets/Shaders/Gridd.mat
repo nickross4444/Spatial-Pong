@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RoomMaterial
-  m_Shader: {fileID: 4800000, guid: 40b0149ccebbe0f408c520893fbd613d, type: 3}
+  m_Name: Gridd
+  m_Shader: {fileID: 4800000, guid: bce1566a07ad12a4da3fb5af91f7a4ba, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,12 +29,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BlendSharpness: 30
-    - _FadeSmoothness: 0.69
-    - _Height: 20
-    - _TileSize: 0.2
+    - _BlendSharpness: 5
+    - _TileSize: 0.3
     m_Colors:
-    - _Color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
-    - _WireframeColor: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
+    - _Color: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
+    - _WireframeColor: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

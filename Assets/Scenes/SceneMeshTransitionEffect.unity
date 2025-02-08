@@ -20828,7 +20828,14 @@ MonoBehaviour:
   playerPaddle: {fileID: 1411374496820942510, guid: 78af509a1c7837442b32d0703f4cdc91, type: 3}
   goalMaterial: {fileID: 2100000, guid: fc44d4f8533e71f4aa4a1c0f342cc449, type: 2}
   paddleControlAreaMaterial: {fileID: 2100000, guid: 141bb00bfb29e9345bdf43ea6599a768, type: 2}
+  AfterWallSetup:
+    m_PersistentCalls:
+      m_Calls: []
   usePassthrough: 1
+  gameStartDelay: 3
+  wallSelectAudio: {fileID: 8300000, guid: eb4d460e7b408ad4195b14658b46bef1, type: 3}
+  wallHoverAudio: {fileID: 8300000, guid: 320123f5d9258904caa2d5876ef6f148, type: 3}
+  courtSpawnAudio: {fileID: 0}
 --- !u!114 &1811781809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20841,6 +20848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446b3a8a7f3981743b7edc90f338b4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballKickDelay: 1.5
   kickForce: 2
   bounceBoostSpeed: 1.08
   paddleBoostSpeed: 1.15
@@ -20862,8 +20870,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 0ae074243bcbf57468d433ad4f78acbb, type: 3}
-  m_Resource: {fileID: 8300000, guid: 0ae074243bcbf57468d433ad4f78acbb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: eb4d460e7b408ad4195b14658b46bef1, type: 3}
+  m_Resource: {fileID: 8300000, guid: eb4d460e7b408ad4195b14658b46bef1, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

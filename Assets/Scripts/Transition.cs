@@ -7,7 +7,7 @@ public class Transition : MonoBehaviour
 {
     private Material revealMaterial;
     public float revealSpeed = 1.5f;
-    private float transitionValue = -5f;
+    private float transitionValue = 0f;
 
     // Define a UnityEvent for starting the transition
     public UnityEvent OnStartTransition;
@@ -38,7 +38,7 @@ public class Transition : MonoBehaviour
 
     IEnumerator TransitionCoroutine(System.Action OnTransitionComplete)
     {
-        while (transitionValue < 5)
+        while (transitionValue < 3f)
         {
 
             transitionValue += revealSpeed * Time.deltaTime;
