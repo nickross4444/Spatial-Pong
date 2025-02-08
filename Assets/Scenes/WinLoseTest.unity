@@ -21431,6 +21431,7 @@ GameObject:
   - component: {fileID: 1811781809}
   - component: {fileID: 1811781808}
   - component: {fileID: 1811781810}
+  - component: {fileID: 1811781811}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -21514,10 +21515,34 @@ MonoBehaviour:
   botScore: 0
   onPlayerWin:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1811781811}
+        m_TargetAssemblyTypeName: WinloseSpawner, Assembly-CSharp
+        m_MethodName: WinEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onBotWin:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1811781811}
+        m_TargetAssemblyTypeName: WinloseSpawner, Assembly-CSharp
+        m_MethodName: LoseEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!82 &1811781810
 AudioSource:
   m_ObjectHideFlags: 0
@@ -21615,6 +21640,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1811781811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811781806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb5ae426cfab7f54dae351c3e6b687d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  winEffect: {fileID: 2491902108566602852, guid: a19228e8607ddd54f97b084e2cfa6de6, type: 3}
+  loseEffect: {fileID: 4173936425603209333, guid: cccb247ed625767478011ec3912ffb92, type: 3}
 --- !u!1 &1812078290
 GameObject:
   m_ObjectHideFlags: 0
