@@ -6,7 +6,7 @@ using UnityEngine.Events; // Required for UnityEvent
 public class Transition : MonoBehaviour
 {
     private Material revealMaterial;
-    public float revealSpeed = 1.5f;
+    public float revealTime = 1.5f;
     private float transitionValue = 0f;
 
     // Define a UnityEvent for starting the transition
@@ -38,15 +38,20 @@ public class Transition : MonoBehaviour
 
     IEnumerator TransitionCoroutine(System.Action OnTransitionComplete)
     {
-        while (transitionValue < 3f)
+        Color originalColor = revealMaterial.GetColor("_Color");
+        Color occludingColor = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);        //fully opaque
+        revealMaterial.SetColor("_Color", occludingColor);
+        while (transitionValue < 1f)
         {
 
-            transitionValue += revealSpeed * Time.deltaTime;
+            transitionValue += Time.deltaTime / revealTime;
             revealMaterial.SetFloat("_Height", transitionValue);
             yield return null;
         }
+        revealMaterial.SetColor("_Color", originalColor);   //stop fully occluding passthrough
         if (OnTransitionComplete != null)
             OnTransitionComplete();
     }
+
 }
 
