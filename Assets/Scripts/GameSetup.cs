@@ -27,6 +27,7 @@ public class GameSetup : MonoBehaviour
     
     [SerializeField] private GameObject scoreboardPrefab;
     private ScoreboardDisplay scoreboardInstance;
+    
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class GameSetup : MonoBehaviour
         StartCoroutine(GetWalls());
         // Set default paddle speed if not already set
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
+        
     }
     IEnumerator GetWalls()
     {
@@ -106,6 +108,7 @@ public class GameSetup : MonoBehaviour
         //start the game
         paddlePlaneComponent.Initialize(playerPaddle);
         GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
+        
     }
 
     // Define handler methods

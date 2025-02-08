@@ -14996,7 +14996,8 @@ MonoBehaviour:
   heightOffset: 2
   distanceFromPlayer: 3
   followPlayer: 1
-  scoreboardScale: 0.005
+  scoreboardScale: -21
+  staticPosition: {x: 0, y: 2, z: 0}
 --- !u!4 &1314058257
 Transform:
   m_ObjectHideFlags: 0
@@ -20917,6 +20918,7 @@ MonoBehaviour:
   distanceFromPlayer: 3
   followPlayer: 1
   scoreboardScale: 0.005
+  staticPosition: {x: 0, y: 2, z: 0}
 --- !u!1 &1812078290
 GameObject:
   m_ObjectHideFlags: 0
