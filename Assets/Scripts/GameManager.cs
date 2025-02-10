@@ -42,6 +42,21 @@ public class GameManager : MonoBehaviour
         ball.GetComponent<Ball>().Initialize(this);
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
     }
+    public void RestartGame()
+    {
+        foreach (EffectSpawn obj in GameObject.FindObjectsByType<EffectSpawn>(FindObjectsSortMode.None))
+        {
+            obj.gameObject.SetActive(false);
+        }
+        ResetScore();
+        StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
+    }
+
+    void ResetScore()
+    {
+        playerScore = 0;
+        botScore = 0;
+    }
 
 
     public void OnBallCollision(Collision collision)
@@ -70,18 +85,27 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Player wins!");
             onPlayerWin?.Invoke();
+            ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            ResetBall(false);
         }
         else if (botScore == maxScore)
+
         {
             Debug.Log("Bot wins!");
             onBotWin?.Invoke();
+            ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            ResetBall(false);
         }
     }
-    void ResetBall()
+    void ResetBall(bool toKick = true)
     {
+
         ball.transform.position = ballStartPos;
         ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-        StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), 1f));
+        if (toKick)
+        {
+            StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
+        }
     }
     [Button]
     void IncreaseBallSpeed()
@@ -121,5 +145,12 @@ public class GameManager : MonoBehaviour
         GameSetup gameSetup = GetComponent<GameSetup>();
         gameSetup.SetupWalls();
     }
-
+    void PauseGame()
+    {
+        Time.timeScale = 0;
+    }
+    void ResumeGame()
+    {
+        Time.timeScale = 1;
+    }
 }

@@ -8,7 +8,7 @@ public class EffectSpawn : MonoBehaviour
     [SerializeField] private float fadeDuration = 1.5f;
     [SerializeField] private GameObject particleFX;
     [SerializeField] private float smoothSpeed = 5f;
-    
+
     private Transform targetCamera;
     private Vector3 targetPosition;
     private AudioSource audioSource;
@@ -16,9 +16,9 @@ public class EffectSpawn : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        
+
         FindMainCamera();
-        
+
         if (targetCamera != null)
         {
             targetPosition = new Vector3(transform.position.x, transform.position.y, targetCamera.position.z);
@@ -31,16 +31,16 @@ public class EffectSpawn : MonoBehaviour
     {
         if (targetCamera == null)
         {
-            FindMainCamera(); 
+            FindMainCamera();
             return;
         }
-        
+
         Vector3 directionToCamera = targetCamera.position - transform.position;
-        directionToCamera.y = 0; 
+        directionToCamera.y = 0;
 
         Vector3 desiredPosition = transform.position + directionToCamera.normalized;
         targetPosition = Vector3.Lerp(targetPosition, desiredPosition, smoothSpeed * Time.deltaTime);
-        
+
         transform.LookAt(new Vector3(targetPosition.x, transform.position.y, targetPosition.z));
     }
 
@@ -52,11 +52,12 @@ public class EffectSpawn : MonoBehaviour
             return;
         }
 
-        Camera[] cameras = FindObjectsOfType<Camera>();
+        Camera[] cameras = FindObjectsByType<Camera>(FindObjectsSortMode.None);
         if (cameras.Length > 0)
         {
             targetCamera = cameras[0].transform;
         }
+
         else
         {
             Debug.LogError("No camera found in the scene!");
@@ -66,12 +67,12 @@ public class EffectSpawn : MonoBehaviour
     IEnumerator FadeInText()
     {
         yield return new WaitForSeconds(1f);
-        
+
         particleFX.SetActive(true);
         audioSource.Play();
-        
+
         yield return new WaitForSeconds(1.5f);
-        
+
         float elapsedTime = 0f;
         Color color = tmpText.color;
         color.a = 0f;
