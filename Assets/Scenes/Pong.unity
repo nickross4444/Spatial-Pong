@@ -21336,7 +21336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walls: []
   SceneMesh: {fileID: 1572365082}
-  pongAnchorPrefabSpawner: {fileID: 0}
+  pongAnchorPrefabSpawner: {fileID: 2110379302}
   PongPassthrough: {fileID: 88328837}
   WorldPassthrough: {fileID: 1036416441}
   ball: {fileID: 6906628618391375677, guid: 56ead93c690f7d94dbf66838749b12c3, type: 3}
@@ -25550,6 +25550,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+--- !u!1 &2110379302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7967023566312706285, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+  m_PrefabInstance: {fileID: 2110379301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2111042401
 GameObject:
   m_ObjectHideFlags: 0
