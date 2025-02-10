@@ -2,10 +2,12 @@ using System.Collections;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     GameObject ball, botPaddle, playerPaddle, playerGoal, botGoal;
+    [Header("Gameplay Settings")]
     [SerializeField] float ballKickDelay = 1.5f;
     [SerializeField] float kickForce = 1;
     [SerializeField] float bounceBoostSpeed = 1.02f;
@@ -15,20 +17,45 @@ public class GameManager : MonoBehaviour
     public int PlayerScore => playerScore;      //this allows public access, but private set, while staying serializable
     public int BotScore => botScore;
     int maxScore = 11;
+    bool isPaused = false;
+    public bool IsPaused => isPaused;      //expose pause state for other components to check
+    private Vector3 storedBallVelocity;
     Vector3 ballStartPos;
 
     [Header("Win Events")]
     public UnityEvent onPlayerWin;
     public UnityEvent onBotWin;
+    public UnityEvent onPause;
+    public UnityEvent onResume;
+
+    [Header("References")]
+    public GameObject pauseMenu;
+
 
     void Start()
+
     {
 
     }
     void Update()
     {
-
+        if (OVRInput.GetDown(OVRInput.Button.Start))
+        {
+            if (isPaused)
+            {
+                ResumeGame();
+                onResume?.Invoke();
+                //menu is set false in inspector
+            }
+            else
+            {
+                PauseGame();
+                pauseMenu.SetActive(true);
+                onPause?.Invoke();
+            }
+        }
     }
+
 
     public void StartBall(GameObject _ball, GameObject _playerPaddle, GameObject _botPaddle, GameObject _playerGoal, GameObject _botGoal)
     {
@@ -99,12 +126,13 @@ public class GameManager : MonoBehaviour
     }
     void ResetBall(bool toKick = true)
     {
-
         ball.transform.position = ballStartPos;
-        ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        Rigidbody rb = ball.GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        rb.isKinematic = false;
         if (toKick)
         {
-            StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
+            StartCoroutine(KickAfterDelay(rb, ballKickDelay));
         }
     }
     [Button]
@@ -135,7 +163,6 @@ public class GameManager : MonoBehaviour
         ball.GetComponent<Ball>().audioSource.PlayOneShot(ball.GetComponent<Ball>().kickSound);
     }
     public void QuitApp()
-
     {
         //!!TODO: add a fade to black here
         Application.Quit();
@@ -147,10 +174,27 @@ public class GameManager : MonoBehaviour
     }
     void PauseGame()
     {
-        Time.timeScale = 0;
+        if (ball != null)
+        {
+            Rigidbody rb = ball.GetComponent<Rigidbody>();
+            storedBallVelocity = rb.linearVelocity;
+            rb.linearVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+        isPaused = true;
     }
-    void ResumeGame()
+    public void ResumeGame()
     {
-        Time.timeScale = 1;
+        if (ball != null)
+        {
+            Rigidbody rb = ball.GetComponent<Rigidbody>();
+            rb.isKinematic = false;
+            rb.linearVelocity = storedBallVelocity;
+        }
+        isPaused = false;
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("Pong");
     }
 }
