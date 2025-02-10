@@ -6,6 +6,7 @@ using Oculus.Interaction.Surfaces;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.Events;
+using Unity.XR.Oculus;
 
 public class GameSetup : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class GameSetup : MonoBehaviour
     GameObject floor;
     List<GameObject> courtWalls = new List<GameObject>();
     [SerializeField]
-    GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
+    GameObject SceneMesh, pongAnchorPrefabSpawner, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
     [SerializeField]
@@ -35,9 +36,14 @@ public class GameSetup : MonoBehaviour
     [SerializeField] AudioClip wallHoverAudio;
     [SerializeField] AudioClip courtSpawnAudio;
 
+    SystemHeadset headsetType;
+
 
     void Start()
     {
+        headsetType = Utils.GetSystemHeadsetType();
+        Debug.Log("Current Headset Type: " + headsetType);
+
         player = GameObject.FindGameObjectWithTag("MainCamera");
         WorldPassthrough.SetActive(usePassthrough);
         PongPassthrough.SetActive(false);
@@ -128,9 +134,6 @@ public class GameSetup : MonoBehaviour
         yield return new WaitForSeconds(gameStartDelay);
         GetComponent<GameManager>().StartBall(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
     }
-
-
-
     void SetPongPassthrough(bool active)
     {
         WorldPassthrough.SetActive(!active && usePassthrough);
@@ -158,7 +161,6 @@ public class GameSetup : MonoBehaviour
         }
     }
 
-
     private void OnUnhover(GameObject wall)
     {
         MeshRenderer renderer = wall.GetComponent<MeshRenderer>();
@@ -180,8 +182,18 @@ public class GameSetup : MonoBehaviour
             MakeGoal(wall);
             if (courtWalls.Count == 2)
             {
-                SceneMesh.SetActive(true);
-                StartCoroutine(CallTransitionWhenReady());
+                if (headsetType == SystemHeadset.Oculus_Link_Quest_2 || headsetType == SystemHeadset.Oculus_Quest_2)
+                {
+                    Debug.Log("Device name : Quest 2");
+                    pongAnchorPrefabSpawner.SetActive(true);
+                    StartCoroutine(CallTransitionWhenReady());
+                }
+                else
+                {
+                    Debug.Log("Device name : Quest 3 or 3s or other");
+                    SceneMesh.SetActive(true);
+                    StartCoroutine(CallTransitionWhenReady());
+                }
             }
         }
     }
