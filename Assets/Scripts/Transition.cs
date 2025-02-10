@@ -4,8 +4,8 @@ using UnityEngine.Events;
 
 public class Transition : MonoBehaviour
 {
-    [SerializeField] private GameObject audioGameObjectPrefab; // Prefab to instantiate
-    private GameObject instantiatedAudioObject; // Reference to the instantiated object
+    [SerializeField] private GameObject audioGameObjectPrefab;
+    private GameObject instantiatedAudioObject;
     private Material revealMaterial;
     public float revealTime = 1.5f;
     private float transitionValue = 0f;
@@ -49,8 +49,7 @@ public class Transition : MonoBehaviour
         {
             transitionValue += Time.deltaTime / revealTime;
             revealMaterial.SetFloat("_Height", transitionValue);
-
-            // Move audioGameObject upwards in sync with the transition
+            
             if (instantiatedAudioObject != null)
             {
                 instantiatedAudioObject.transform.position = new Vector3(0, transitionValue * 4f, 0);
@@ -58,15 +57,13 @@ public class Transition : MonoBehaviour
 
             yield return null;
         }
-
-        // Restore original material color
+        
         revealMaterial.SetColor("_Color", originalColor);
-
-        // Destroy audioGameObject once transition completes
+        
         if (instantiatedAudioObject != null)
         {
             Destroy(instantiatedAudioObject);
-            instantiatedAudioObject = null; // Clear reference
+            instantiatedAudioObject = null; 
         }
 
         OnTransitionComplete?.Invoke();
