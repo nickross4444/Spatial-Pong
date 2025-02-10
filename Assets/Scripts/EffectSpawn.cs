@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class FadeTMPText : MonoBehaviour
+public class EffectSpawn : MonoBehaviour
 {
     [SerializeField] private TMP_Text tmpText;
     [SerializeField] private float fadeDuration = 1.5f;

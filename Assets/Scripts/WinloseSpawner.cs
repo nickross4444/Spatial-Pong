@@ -39,7 +39,7 @@ public class WinloseSpawner : MonoBehaviour
         }
         
         Vector3 centerPosition = (goal1.transform.position + goal2.transform.position) / 2f;
-        centerPosition.y = 1.5f;
+        centerPosition.y = 1.6f;
         
         centerPosition.x = cameraTransform.position.x;
         
