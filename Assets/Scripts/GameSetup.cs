@@ -36,11 +36,17 @@ public class GameSetup : MonoBehaviour
     [SerializeField] AudioClip wallHoverAudio;
     [SerializeField] AudioClip courtSpawnAudio;
 
+    SystemHeadset headsetType;
+
 
     void Start()
     {
-        string productName = OVRPlugin.productName;
-        Debug.Log(productName);
+        //string productName = OVRPlugin.productName;
+        //Debug.Log(productName);
+
+        headsetType = Utils.GetSystemHeadsetType();
+        Debug.Log("Current Headset Type: " + headsetType);
+
         player = GameObject.FindGameObjectWithTag("MainCamera");
         WorldPassthrough.SetActive(usePassthrough);
         PongPassthrough.SetActive(false);
@@ -113,13 +119,30 @@ public class GameSetup : MonoBehaviour
     IEnumerator CallTransitionWhenReady()
     {
         //it takes some time for the scene mesh to be generated. This starts the transition when it's ready
-        Transition transitionComponent;
-        do
+
+
+        if (headsetType == SystemHeadset.Oculus_Link_Quest_2 || headsetType == SystemHeadset.Oculus_Quest_2)
         {
-            transitionComponent = FindFirstObjectByType<Transition>();
-            yield return null;
-        } while (transitionComponent == null);
-        transitionComponent.StartTransition(() => SetupPong());        //set passthrough to true after transition is complete
+            GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
+
+            ///Do walls trasition here, 
+        }
+        else
+        {
+            Transition transitionComponent;
+            do
+            {
+                transitionComponent = FindFirstObjectByType<Transition>();
+                yield return null;
+            } while (transitionComponent == null);
+            transitionComponent.StartTransition(() => SetupPong());
+
+        }
+        //set passthrough to true after transition is complete
+
+
+       
+
     }
     IEnumerator StartBallAfterDelay()
     {
@@ -178,18 +201,27 @@ public class GameSetup : MonoBehaviour
             MakeGoal(wall);
             if (courtWalls.Count == 2)
             {
-                if (OVRPlugin.productName == "Meta_Link_Quest_3" || OVRPlugin.productName == "Meta_Quest_3")
-                {
-                    Debug.Log("Device name : Quest 3");
-                    SceneMesh.SetActive(true);
-                    StartCoroutine(CallTransitionWhenReady());
-                }
-                else 
-                {
-                    Debug.Log("Device name : Quest 2");
-                    pongAnchorPrefabSpawner.SetActive(true);
-                }
-                
+                if (headsetType == SystemHeadset.Oculus_Link_Quest_2 || headsetType == SystemHeadset.Oculus_Quest_2)
+                 {
+                     Debug.Log("Device name : Quest 2");
+                     pongAnchorPrefabSpawner.SetActive(true);
+
+                 }
+                 else 
+                 {
+                   if (headsetType == SystemHeadset.Meta_Quest_3 || headsetType == SystemHeadset.Meta_Link_Quest_3 || headsetType == SystemHeadset.Meta_Quest_3S || headsetType == SystemHeadset.Meta_Link_Quest_3S)
+                     {
+                         Debug.Log("Device name : Quest 3 or 3s or other");
+                         SceneMesh.SetActive(true);
+                         StartCoroutine(CallTransitionWhenReady());
+                     }
+                 }
+
+
+                //SceneMesh.SetActive(true);
+                //StartCoroutine(CallTransitionWhenReady());
+
+
             }
         }
     }

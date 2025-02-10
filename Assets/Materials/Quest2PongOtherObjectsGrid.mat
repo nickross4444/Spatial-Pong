@@ -27,7 +27,7 @@ Material:
     m_TexEnvs:
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 46d635a3b73667448b21a179838a1107, type: 3}
-        m_Scale: {x: 4, y: 4}
+        m_Scale: {x: 5, y: 5}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:
         m_Texture: {fileID: 2800000, guid: 46d635a3b73667448b21a179838a1107, type: 3}
@@ -57,7 +57,7 @@ Material:
     - _Cull: 0
     - _DstBlend: 0
     - _FadeSmoothness: 0.1
-    - _Height: 20
+    - _Height: -10
     - _MaxWorldY: 4
     - _MinWorldY: -1
     - _QueueControl: 0

@@ -52,12 +52,12 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendSharpness: 17
-    - _BlendWireframe: 10
+    - _BlendWireframe: 9.2
     - _CastShadows: 1
     - _Cull: 0
     - _DstBlend: 0
     - _FadeSmoothness: 0.1
-    - _Height: 20
+    - _Height: -10
     - _MaxWorldY: 4
     - _MinWorldY: -1
     - _QueueControl: 0
