@@ -134,9 +134,6 @@ public class GameSetup : MonoBehaviour
         yield return new WaitForSeconds(gameStartDelay);
         GetComponent<GameManager>().StartBall(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
     }
-
-
-
     void SetPongPassthrough(bool active)
     {
         WorldPassthrough.SetActive(!active && usePassthrough);
@@ -163,7 +160,6 @@ public class GameSetup : MonoBehaviour
             SetupAudioSource.PlayOneShot(wallHoverAudio);
         }
     }
-
 
     private void OnUnhover(GameObject wall)
     {
