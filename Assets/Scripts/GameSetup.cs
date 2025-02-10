@@ -110,13 +110,18 @@ public class GameSetup : MonoBehaviour
     IEnumerator CallTransitionWhenReady()
     {
         //it takes some time for the scene mesh to be generated. This starts the transition when it's ready
-        Transition transitionComponent;
+        Transition[] transitionComponents;
         do
         {
-            transitionComponent = FindFirstObjectByType<Transition>();
+            transitionComponents = FindObjectsByType<Transition>(FindObjectsSortMode.None);
             yield return null;
-        } while (transitionComponent == null);
-        transitionComponent.StartTransition(() => SetupPong());        //set passthrough to true after transition is complete
+        } while (transitionComponents.Length == 0);
+
+        for (int i = 0; i < transitionComponents.Length; i++)
+        {
+            transitionComponents[i].StartTransition(i == 0 ? () => SetupPong() : null);    //set passthrough to true after transition is complete
+        }
+
     }
     IEnumerator StartBallAfterDelay()
     {
