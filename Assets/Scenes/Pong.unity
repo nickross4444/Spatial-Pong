@@ -21478,7 +21478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc61ad7bc3ee3f246add23da6e59b45f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walls: []
   SceneMesh: {fileID: 1572365082}
   pongAnchorPrefabSpawner: {fileID: 2110379302}
   PongPassthrough: {fileID: 88328837}
@@ -21520,12 +21519,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446b3a8a7f3981743b7edc90f338b4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paddleSpeed: 1.2
   ballKickDelay: 1
-  kickForce: 2
-  bounceBoostSpeed: 1.08
-  paddleBoostSpeed: 1.15
-  playerScore: 0
-  botScore: 0
+  kickForce: 1.5
+  bounceBoostSpeed: 1
+  paddleBoostSpeed: 1.2
+  kickRandomRangeDegrees: 50
+  possessionForce: 0.5
   onPlayerWin:
     m_PersistentCalls:
       m_Calls:
@@ -21580,7 +21580,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
-  Spatialize: 0
+  Spatialize: 1
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1

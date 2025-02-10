@@ -35,7 +35,6 @@ public class Transition : MonoBehaviour
         StartCoroutine(TransitionCoroutine(OnTransitionComplete));
     }
 
-
     IEnumerator TransitionCoroutine(System.Action OnTransitionComplete)
     {
         Color originalColor = revealMaterial.GetColor("_Color");
