@@ -141,7 +141,7 @@ public class GameSetup : MonoBehaviour
         //set passthrough to true after transition is complete
 
 
-       
+
 
     }
     IEnumerator StartBallAfterDelay()
@@ -202,26 +202,17 @@ public class GameSetup : MonoBehaviour
             if (courtWalls.Count == 2)
             {
                 if (headsetType == SystemHeadset.Oculus_Link_Quest_2 || headsetType == SystemHeadset.Oculus_Quest_2)
-                 {
-                     Debug.Log("Device name : Quest 2");
-                     pongAnchorPrefabSpawner.SetActive(true);
-
-                 }
-                 else 
-                 {
-                   if (headsetType == SystemHeadset.Meta_Quest_3 || headsetType == SystemHeadset.Meta_Link_Quest_3 || headsetType == SystemHeadset.Meta_Quest_3S || headsetType == SystemHeadset.Meta_Link_Quest_3S)
-                     {
-                         Debug.Log("Device name : Quest 3 or 3s or other");
-                         SceneMesh.SetActive(true);
-                         StartCoroutine(CallTransitionWhenReady());
-                     }
-                 }
-
-
-                //SceneMesh.SetActive(true);
-                //StartCoroutine(CallTransitionWhenReady());
-
-
+                {
+                    Debug.Log("Device name : Quest 2");
+                    pongAnchorPrefabSpawner.SetActive(true);
+                    StartCoroutine(CallTransitionWhenReady());
+                }
+                else
+                {
+                    Debug.Log("Device name : Quest 3 or 3s or other");
+                    SceneMesh.SetActive(true);
+                    StartCoroutine(CallTransitionWhenReady());
+                }
             }
         }
     }

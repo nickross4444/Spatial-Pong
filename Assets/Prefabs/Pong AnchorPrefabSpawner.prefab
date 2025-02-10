@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 55210190008280813}
   - component: {fileID: 3079212987653324557}
   m_Layer: 0
-  m_Name: Pong[BuildingBlock] AnchorPrefabSpawner
+  m_Name: Pong AnchorPrefabSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

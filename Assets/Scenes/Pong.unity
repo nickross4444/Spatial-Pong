@@ -21467,6 +21467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walls: []
   SceneMesh: {fileID: 1572365082}
+  pongAnchorPrefabSpawner: {fileID: 0}
   PongPassthrough: {fileID: 88328837}
   WorldPassthrough: {fileID: 1036416441}
   ball: {fileID: 6906628618391375677, guid: 56ead93c690f7d94dbf66838749b12c3, type: 3}
@@ -25585,6 +25586,63 @@ MonoBehaviour:
   _freezeRotationX: 0
   _freezeRotationY: 0
   _freezeRotationZ: 0
+--- !u!1001 &2110379301
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873524353418369247, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967023566312706285, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
+      propertyPath: m_Name
+      value: Pong AnchorPrefabSpawner
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d056a0cd0fcfbbf40b02a8eb84393ca1, type: 3}
 --- !u!1 &2111042401
 GameObject:
   m_ObjectHideFlags: 0
@@ -26330,6 +26388,7 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1486342148}
   - {fileID: 1572365086}
+  - {fileID: 2110379301}
   - {fileID: 954952183}
   - {fileID: 1571324685}
   - {fileID: 88328840}
