@@ -92,13 +92,11 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Bot scored!");
             botScore++;
-            ResetBall();
         }
         else if (collision.gameObject == botGoal)
         {
             Debug.Log("Player scored!");
             playerScore++;
-            ResetBall();
         }
         else
         {
@@ -107,22 +105,27 @@ public class GameManager : MonoBehaviour
             //float force = collision.gameObject.CompareTag("Paddle") ? paddleBoostForce : bounceBoostForce;
             //ball.GetComponent<Rigidbody>().AddForce(normal * force, ForceMode.Impulse);
             ball.GetComponent<Rigidbody>().linearVelocity *= collision.gameObject.CompareTag("Paddle") ? paddleBoostSpeed : bounceBoostSpeed;
+            return;
         }
+        bool gameOver = false;
         if (playerScore == maxScore)
         {
             Debug.Log("Player wins!");
             onPlayerWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             ResetBall(false);
+            gameOver = true;
         }
         else if (botScore == maxScore)
-
         {
             Debug.Log("Bot wins!");
             onBotWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            ResetBall(false);
+            gameOver = true;
         }
+        ResetBall(!gameOver);
+
+
     }
     void ResetBall(bool toKick = true)
     {
