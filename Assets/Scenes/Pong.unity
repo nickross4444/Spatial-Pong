@@ -21585,8 +21585,8 @@ MonoBehaviour:
   kickForce: 2
   bounceBoostSpeed: 1.08
   paddleBoostSpeed: 1.15
-  playerScore: 10
-  botScore: 10
+  playerScore: 0
+  botScore: 0
   onPlayerWin:
     m_PersistentCalls:
       m_Calls:
