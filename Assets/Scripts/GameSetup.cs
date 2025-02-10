@@ -41,9 +41,6 @@ public class GameSetup : MonoBehaviour
 
     void Start()
     {
-        //string productName = OVRPlugin.productName;
-        //Debug.Log(productName);
-
         headsetType = Utils.GetSystemHeadsetType();
         Debug.Log("Current Headset Type: " + headsetType);
 
@@ -119,29 +116,17 @@ public class GameSetup : MonoBehaviour
     IEnumerator CallTransitionWhenReady()
     {
         //it takes some time for the scene mesh to be generated. This starts the transition when it's ready
-
-
-        if (headsetType == SystemHeadset.Oculus_Link_Quest_2 || headsetType == SystemHeadset.Oculus_Quest_2)
+        Transition[] transitionComponents;
+        do
         {
-            GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
+            transitionComponents = FindObjectsByType<Transition>(FindObjectsSortMode.None);
+            yield return null;
+        } while (transitionComponents.Length == 0);
 
-            ///Do walls trasition here, 
-        }
-        else
+        for (int i = 0; i < transitionComponents.Length; i++)
         {
-            Transition transitionComponent;
-            do
-            {
-                transitionComponent = FindFirstObjectByType<Transition>();
-                yield return null;
-            } while (transitionComponent == null);
-            transitionComponent.StartTransition(() => SetupPong());
-
+            transitionComponents[i].StartTransition(i == 0 ? () => SetupPong() : null);    //set passthrough to true after transition is complete
         }
-        //set passthrough to true after transition is complete
-
-
-
 
     }
     IEnumerator StartBallAfterDelay()
