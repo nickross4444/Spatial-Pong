@@ -6,6 +6,7 @@ using Oculus.Interaction.Surfaces;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.Events;
+using Unity.XR.Oculus;
 
 public class GameSetup : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class GameSetup : MonoBehaviour
     GameObject floor;
     List<GameObject> courtWalls = new List<GameObject>();
     [SerializeField]
-    GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
+    GameObject SceneMesh, pongAnchorPrefabSpawner, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
     [SerializeField]
@@ -38,6 +39,8 @@ public class GameSetup : MonoBehaviour
 
     void Start()
     {
+        string productName = OVRPlugin.productName;
+        Debug.Log(productName);
         player = GameObject.FindGameObjectWithTag("MainCamera");
         WorldPassthrough.SetActive(usePassthrough);
         PongPassthrough.SetActive(false);
@@ -175,8 +178,18 @@ public class GameSetup : MonoBehaviour
             MakeGoal(wall);
             if (courtWalls.Count == 2)
             {
-                SceneMesh.SetActive(true);
-                StartCoroutine(CallTransitionWhenReady());
+                if (OVRPlugin.productName == "Meta_Link_Quest_3" || OVRPlugin.productName == "Meta_Quest_3")
+                {
+                    Debug.Log("Device name : Quest 3");
+                    SceneMesh.SetActive(true);
+                    StartCoroutine(CallTransitionWhenReady());
+                }
+                else 
+                {
+                    Debug.Log("Device name : Quest 2");
+                    pongAnchorPrefabSpawner.SetActive(true);
+                }
+                
             }
         }
     }
