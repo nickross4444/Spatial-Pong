@@ -4,24 +4,21 @@ using System.Collections;
 
 public class FadeTMPText : MonoBehaviour
 {
-    public TMP_Text tmpText;
-    public float fadeDuration = 1.5f;
-    public GameObject particleFX;
-    private AudioSource audioSource;
-
-    [Header("Text Follow Settings")]
+    [SerializeField] private TMP_Text tmpText;
+    [SerializeField] private float fadeDuration = 1.5f;
+    [SerializeField] private GameObject particleFX;
+    [SerializeField] private float smoothSpeed = 5f;
+    
     private Transform targetCamera;
-    public float smoothSpeed = 5f; // Adjust for smoother delay
     private Vector3 targetPosition;
+    private AudioSource audioSource;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-
-        // Find the main camera
+        
         FindMainCamera();
-
-        // Initialize target position
+        
         if (targetCamera != null)
         {
             targetPosition = new Vector3(transform.position.x, transform.position.y, targetCamera.position.z);
@@ -34,18 +31,16 @@ public class FadeTMPText : MonoBehaviour
     {
         if (targetCamera == null)
         {
-            FindMainCamera(); // Ensure the camera is found
+            FindMainCamera(); 
             return;
         }
-
-        // Compute new target position (keeping only Y-axis rotation)
+        
         Vector3 directionToCamera = targetCamera.position - transform.position;
-        directionToCamera.y = 0; // Ignore X and Z rotation
+        directionToCamera.y = 0; 
 
         Vector3 desiredPosition = transform.position + directionToCamera.normalized;
         targetPosition = Vector3.Lerp(targetPosition, desiredPosition, smoothSpeed * Time.deltaTime);
-
-        // Make the text face the camera smoothly
+        
         transform.LookAt(new Vector3(targetPosition.x, transform.position.y, targetPosition.z));
     }
 
@@ -61,7 +56,6 @@ public class FadeTMPText : MonoBehaviour
         if (cameras.Length > 0)
         {
             targetCamera = cameras[0].transform;
-            Debug.LogWarning("No MainCamera found! Using first available camera.");
         }
         else
         {
@@ -72,10 +66,12 @@ public class FadeTMPText : MonoBehaviour
     IEnumerator FadeInText()
     {
         yield return new WaitForSeconds(1f);
+        
         particleFX.SetActive(true);
         audioSource.Play();
+        
         yield return new WaitForSeconds(1.5f);
-
+        
         float elapsedTime = 0f;
         Color color = tmpText.color;
         color.a = 0f;
