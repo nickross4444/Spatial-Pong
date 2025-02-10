@@ -8,6 +8,7 @@ public class PaddlePlane : MonoBehaviour
     private RayInteractable rayInteractable;
     private IPointable pointable;
     private float paddleSpeed;
+    private GameManager gameManager;
 
     Vector3 targetPos;
 
@@ -19,11 +20,12 @@ public class PaddlePlane : MonoBehaviour
         pointable = GetComponent<IPointable>();
         rayInteractable.WhenStateChanged += HandleStateChanged;
         pointable.WhenPointerEventRaised += HandlePointerEvent;
+        gameManager = FindFirstObjectByType<GameManager>();
     }
 
     private void HandleStateChanged(InteractableStateChangeArgs args)
     {
-        if (args.NewState != InteractableState.Hover)
+        if (args.NewState != InteractableState.Hover && paddle != null)
         {
             targetPos = paddle.transform.position;
         }
@@ -39,7 +41,7 @@ public class PaddlePlane : MonoBehaviour
 
     void Update()
     {
-        if (targetPos != null)
+        if (targetPos != null && !gameManager.IsPaused)
         {
             paddle.transform.position = Vector3.MoveTowards(paddle.transform.position, targetPos, paddleSpeed * Time.deltaTime);
         }

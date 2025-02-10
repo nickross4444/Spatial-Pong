@@ -8,6 +8,7 @@ public class PaddleBot : MonoBehaviour
     private Quaternion initialRotation;
     private float paddleSpeed;
     float xMax, xMin, yMax, yMin;
+    private GameManager gameManager;
 
     public void StartBot(GameObject _ball, Mesh boundsMesh)
     {
@@ -15,6 +16,7 @@ public class PaddleBot : MonoBehaviour
         initialPosition = transform.position;
         initialRotation = transform.rotation;
         paddleSpeed = PlayerPrefs.GetFloat("PaddleSpeed", 1f);
+        gameManager = FindFirstObjectByType<GameManager>();
 
         xMax = boundsMesh.bounds.max.x;
         xMin = boundsMesh.bounds.min.x;
@@ -24,7 +26,7 @@ public class PaddleBot : MonoBehaviour
 
     void Update()
     {
-        if (ball != null)
+        if (ball != null && !gameManager.IsPaused)
         {
             // Get vector from paddle to ball
             Vector3 toBall = ball.transform.position - transform.position;

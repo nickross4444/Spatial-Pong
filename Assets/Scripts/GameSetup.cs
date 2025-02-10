@@ -5,6 +5,8 @@ using Oculus.Interaction;
 using Oculus.Interaction.Surfaces;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.Events;
+using Unity.XR.Oculus;
 
 public class GameSetup : MonoBehaviour
 {
@@ -13,9 +15,11 @@ public class GameSetup : MonoBehaviour
     GameObject floor;
     List<GameObject> courtWalls = new List<GameObject>();
     [SerializeField]
-    GameObject SceneMesh, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
+    GameObject SceneMesh, pongAnchorPrefabSpawner, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
+    [SerializeField]
+    UnityEvent AfterWallSetup;
     GameObject player;
     float spawnHeight = 1f;
     float goalOffset = 0.25f;
@@ -24,32 +28,44 @@ public class GameSetup : MonoBehaviour
     float paddleSpeed = 2f;
     [SerializeField]
     bool usePassthrough = true;
-    
-    [SerializeField] private GameObject scoreboardPrefab;
-    private ScoreboardDisplay scoreboardInstance;
-    
+    [SerializeField]
+    float gameStartDelay = 3f;
+    AudioSource SetupAudioSource;
+    [Header("Audio")]
+    [SerializeField] AudioClip wallSelectAudio;
+    [SerializeField] AudioClip wallHoverAudio;
+    [SerializeField] AudioClip courtSpawnAudio;
+
+    SystemHeadset headsetType;
+
 
     void Start()
     {
+        headsetType = Utils.GetSystemHeadsetType();
+        Debug.Log("Current Headset Type: " + headsetType);
+
         player = GameObject.FindGameObjectWithTag("MainCamera");
         WorldPassthrough.SetActive(usePassthrough);
         PongPassthrough.SetActive(false);
         StartCoroutine(GetWalls());
         // Set default paddle speed if not already set
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
-        
+        SetupAudioSource = GetComponent<AudioSource>();
     }
-    IEnumerator GetWalls()
+    public IEnumerator GetWalls()
     {
         while (walls.Length == 0 || floor == null)
         {
-            yield return new WaitForSeconds(1);
+            yield return null;
             walls = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name.Contains("EffectMesh")).ToArray();
             floor = GameObject.Find("FLOOR");
         }
-        SetupWalls();
+        foreach (GameObject wall in walls)
+        {
+            wall.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
-    void SetupWalls()
+    public void SetupWalls()
     {
         foreach (GameObject wall in walls)
         {
@@ -60,19 +76,10 @@ public class GameSetup : MonoBehaviour
 
             // Add event handlers
             rayInteractable.WhenPointerEventRaised += (args) => HandleStateChanged(args, wall);
-            wall.GetComponent<MeshRenderer>().enabled = false;
         }
     }
     public void SetupPong()
     {
-        //foreach (RayInteractor interactor in FindObjectsByType<RayInteractor>(FindObjectsSortMode.None))
-        //{
-        //    interactor.gameObject.SetActive(false);     //turn off pointers
-        //}
-        WorldPassthrough.SetActive(false);
-        PongPassthrough.SetActive(usePassthrough);
-
-        SceneMesh.SetActive(true);
         //sort courtWalls by distance to player
         courtWalls.Sort((a, b) => Vector3.Distance(a.transform.position, player.transform.position).CompareTo(Vector3.Distance(b.transform.position, player.transform.position)));
         //create paddlePlane
@@ -96,19 +103,41 @@ public class GameSetup : MonoBehaviour
         Vector3 botPos = courtWalls[1].transform.position + courtWalls[1].transform.forward * botPaddleOffset;
         botPos.y = floor.transform.position.y + spawnHeight;
         botPaddle = Instantiate(botPaddle, botPos, courtWalls[1].transform.rotation);
-        
-        // Create and initialize the scoreboard
-        GameObject scoreboardObj = Instantiate(scoreboardPrefab);
-        scoreboardInstance = scoreboardObj.GetComponent<ScoreboardDisplay>();
-        
-        // Initialize the game manager with the scoreboard
-        GameManager gameManager = GetComponent<GameManager>();
-        gameManager.InitializeScoreboard(scoreboardInstance);
-        
         //start the game
         paddlePlaneComponent.Initialize(playerPaddle);
-        GetComponent<GameManager>().StartGame(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
-        
+        AfterWallSetup.Invoke();
+        SetPongPassthrough(true);
+        SetupAudioSource.PlayOneShot(courtSpawnAudio);
+        StartCoroutine(StartBallAfterDelay());
+    }
+
+
+
+    IEnumerator CallTransitionWhenReady()
+    {
+        //it takes some time for the scene mesh to be generated. This starts the transition when it's ready
+        Transition[] transitionComponents;
+        do
+        {
+            transitionComponents = FindObjectsByType<Transition>(FindObjectsSortMode.None);
+            yield return null;
+        } while (transitionComponents.Length == 0);
+
+        for (int i = 0; i < transitionComponents.Length; i++)
+        {
+            transitionComponents[i].StartTransition(i == 0 ? () => SetupPong() : null);    //set passthrough to true after transition is complete
+        }
+
+    }
+    IEnumerator StartBallAfterDelay()
+    {
+        yield return new WaitForSeconds(gameStartDelay);
+        GetComponent<GameManager>().StartBall(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
+    }
+    void SetPongPassthrough(bool active)
+    {
+        WorldPassthrough.SetActive(!active && usePassthrough);
+        PongPassthrough.SetActive(active && usePassthrough);
     }
 
     // Define handler methods
@@ -128,6 +157,7 @@ public class GameSetup : MonoBehaviour
         if (courtWalls.Count < 2 && renderer != null && !courtWalls.Contains(wall))
         {
             renderer.enabled = true;
+            SetupAudioSource.PlayOneShot(wallHoverAudio);
         }
     }
 
@@ -152,9 +182,18 @@ public class GameSetup : MonoBehaviour
             MakeGoal(wall);
             if (courtWalls.Count == 2)
             {
-                //RayInteractable rayInteractable = wall.GetComponent<RayInteractable>();
-                //rayInteractable.WhenPointerEventRaised -= (args) => HandleStateChanged(args, wall);
-                SetupPong();
+                if (headsetType == SystemHeadset.Oculus_Link_Quest_2 || headsetType == SystemHeadset.Oculus_Quest_2)
+                {
+                    Debug.Log("Device name : Quest 2");
+                    pongAnchorPrefabSpawner.SetActive(true);
+                    StartCoroutine(CallTransitionWhenReady());
+                }
+                else
+                {
+                    Debug.Log("Device name : Quest 3 or 3s or other");
+                    SceneMesh.SetActive(true);
+                    StartCoroutine(CallTransitionWhenReady());
+                }
             }
         }
     }
@@ -163,5 +202,6 @@ public class GameSetup : MonoBehaviour
         wall.GetComponent<MeshRenderer>().material = goalMaterial;
         wall.transform.position += wall.transform.forward * goalOffset;
         wall.tag = "Goal";
+        SetupAudioSource.PlayOneShot(wallSelectAudio);
     }
 }

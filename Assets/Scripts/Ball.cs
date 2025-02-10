@@ -5,10 +5,11 @@ public class Ball : MonoBehaviour
     private GameManager gameManager;
     [SerializeField] float minSpeed = 0.1f;
     Rigidbody rb;
-    AudioSource audioSource;
+    public AudioSource audioSource { get; private set; }
     public AudioClip goalSound;
     public AudioClip bounceSound;
     public AudioClip paddleSound;
+    public AudioClip kickSound;
 
     void Awake()
     {
@@ -47,9 +48,10 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        if (rb.linearVelocity.magnitude < minSpeed && rb.linearVelocity.magnitude > 0)      //don't affect 0 velocity
+        if (rb != null && rb.linearVelocity.magnitude < minSpeed && rb.linearVelocity.magnitude > 0)      //don't affect 0 velocity
         {
             rb.linearVelocity = rb.linearVelocity.normalized * minSpeed;
         }
     }
+
 }
