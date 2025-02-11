@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f198e13a847c20b4ba08ee8d7f7106f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioGameObjectPrefab: {fileID: 6703585342184593541, guid: 0e200b3cfc11ced49b8176720e98e8f6, type: 3}
   revealTime: 3
   OnStartTransition:
     m_PersistentCalls:

@@ -10,7 +10,6 @@ using Unity.XR.Oculus;
 
 public class GameSetup : MonoBehaviour
 {
-    [SerializeField]
     GameObject[] walls;
     GameObject floor;
     List<GameObject> courtWalls = new List<GameObject>();
@@ -25,13 +24,13 @@ public class GameSetup : MonoBehaviour
     float goalOffset = 0.25f;
     float playerPaddleOffset = 1.15f;
     float botPaddleOffset = 1f;
-    float paddleSpeed = 2f;
     [SerializeField]
     bool usePassthrough = true;
     [SerializeField]
     float gameStartDelay = 3f;
     AudioSource SetupAudioSource;
     [Header("Audio")]
+
     [SerializeField] AudioClip wallSelectAudio;
     [SerializeField] AudioClip wallHoverAudio;
     [SerializeField] AudioClip courtSpawnAudio;
@@ -48,18 +47,17 @@ public class GameSetup : MonoBehaviour
         WorldPassthrough.SetActive(usePassthrough);
         PongPassthrough.SetActive(false);
         StartCoroutine(GetWalls());
-        // Set default paddle speed if not already set
-        PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
         SetupAudioSource = GetComponent<AudioSource>();
     }
     public IEnumerator GetWalls()
     {
-        while (walls.Length == 0 || floor == null)
+        do
         {
             yield return null;
             walls = FindObjectsByType<GameObject>(FindObjectsSortMode.None).Where(obj => obj.name.Contains("EffectMesh")).ToArray();
             floor = GameObject.Find("FLOOR");
-        }
+        } while (walls.Length == 0 || floor == null);
+
         foreach (GameObject wall in walls)
         {
             wall.GetComponent<MeshRenderer>().enabled = false;
@@ -105,13 +103,10 @@ public class GameSetup : MonoBehaviour
         botPaddle = Instantiate(botPaddle, botPos, courtWalls[1].transform.rotation);
         //start the game
         paddlePlaneComponent.Initialize(playerPaddle);
-        AfterWallSetup.Invoke();
         SetPongPassthrough(true);
         SetupAudioSource.PlayOneShot(courtSpawnAudio);
         StartCoroutine(StartBallAfterDelay());
     }
-
-
 
     IEnumerator CallTransitionWhenReady()
     {
@@ -127,7 +122,6 @@ public class GameSetup : MonoBehaviour
         {
             transitionComponents[i].StartTransition(i == 0 ? () => SetupPong() : null);    //set passthrough to true after transition is complete
         }
-
     }
     IEnumerator StartBallAfterDelay()
     {
@@ -136,8 +130,8 @@ public class GameSetup : MonoBehaviour
     }
     void SetPongPassthrough(bool active)
     {
-        WorldPassthrough.SetActive(!active && usePassthrough);
         PongPassthrough.SetActive(active && usePassthrough);
+        WorldPassthrough.SetActive(!active && usePassthrough);
     }
 
     // Define handler methods
@@ -176,7 +170,7 @@ public class GameSetup : MonoBehaviour
 
     private void OnSelect(GameObject wall)
     {
-        if (courtWalls.Count < 2)
+        if (courtWalls.Count < 2 && !courtWalls.Contains(wall))
         {
             courtWalls.Add(wall);
             MakeGoal(wall);
@@ -186,14 +180,14 @@ public class GameSetup : MonoBehaviour
                 {
                     Debug.Log("Device name : Quest 2");
                     pongAnchorPrefabSpawner.SetActive(true);
-                    StartCoroutine(CallTransitionWhenReady());
                 }
                 else
                 {
                     Debug.Log("Device name : Quest 3 or 3s or other");
                     SceneMesh.SetActive(true);
-                    StartCoroutine(CallTransitionWhenReady());
                 }
+                StartCoroutine(CallTransitionWhenReady());
+                AfterWallSetup.Invoke();
             }
         }
     }
