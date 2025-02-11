@@ -90,7 +90,21 @@ public class GameSetup : MonoBehaviour
         PaddlePlane paddlePlaneComponent = paddlePlane.AddComponent<PaddlePlane>();
         
         // Spawn PlayZone
-        float paddleWidth = paddlePlane.GetComponent<Renderer>().bounds.size.x;
+        Vector3 size = paddlePlane.GetComponent<Renderer>().bounds.size;
+        Vector3 rightVector = paddlePlane.transform.right; 
+        float paddleWidth;
+        if (Mathf.Abs(Vector3.Dot(rightVector, Vector3.right)) > 0.9f)
+        {
+            paddleWidth = size.x; 
+        }
+        else if (Mathf.Abs(Vector3.Dot(rightVector, Vector3.up)) > 0.9f)
+        {
+            paddleWidth = size.y; 
+        }
+        else
+        {
+            paddleWidth = size.z; 
+        }
         Quaternion playZoneRotation = paddlePlane.transform.rotation * Quaternion.Euler(90, 0, 0);
         Vector3 spawnPosition = paddlePlane.transform.position + paddlePlane.transform.forward * 0.55f;
         spawnPosition.y = 0.1f;
@@ -100,7 +114,9 @@ public class GameSetup : MonoBehaviour
         if (quad != null)
         {
             Vector3 originalScale = quad.localScale;
-            quad.localScale = new Vector3(paddleWidth, originalScale.y, originalScale.z);
+            float originalWidth = originalScale.x; 
+            float newWidth = Mathf.Max(originalWidth, paddleWidth);
+            quad.localScale = new Vector3(newWidth, originalScale.y, originalScale.z);
         }
 
         //instantiate ball at the center of the court
@@ -213,4 +229,5 @@ public class GameSetup : MonoBehaviour
         wall.tag = "Goal";
         SetupAudioSource.PlayOneShot(wallSelectAudio);
     }
+
 }
