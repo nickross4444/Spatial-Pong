@@ -3516,6 +3516,57 @@ Transform:
   - {fileID: 747531381}
   m_Father: {fileID: 2100045525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &281904102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 281904104}
+  - component: {fileID: 281904103}
+  m_Layer: 5
+  m_Name: ScoreboardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &281904103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281904102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d01cffaab79d2c47819829754985aa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiCamera: {fileID: 326070121}
+  planeDistance: 0.5
+  scoreboardSize: {x: 400, y: 100}
+  fontSize: 72
+  textColor: {r: 1, g: 1, b: 1, a: 1}
+  topOffset: 50
+  backgroundColor: {r: 0, g: 0, b: 0, a: 0.8}
+--- !u!4 &281904104
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281904102}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &286752812
 GameObject:
   m_ObjectHideFlags: 0
@@ -4183,7 +4234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
+  m_RequiresDepthTextureOption: 0
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 1
   m_Cameras: []
@@ -4235,7 +4286,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 954685361}
+  m_Father: {fileID: 1486342148}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &328225756
 GameObject:
@@ -11393,7 +11444,6 @@ Transform:
   m_Children:
   - {fileID: 2123710043}
   - {fileID: 866176681}
-  - {fileID: 326070124}
   - {fileID: 1643872203}
   - {fileID: 1579356923}
   - {fileID: 260595225}
@@ -17535,6 +17585,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 326070124}
   - {fileID: 954685361}
   - {fileID: 895912705}
   m_Father: {fileID: 0}
@@ -21711,6 +21762,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   pauseMenu: {fileID: 1584960461}
+  scoreboard: {fileID: 0}
 --- !u!82 &1811781810
 AudioSource:
   m_ObjectHideFlags: 0
@@ -26528,3 +26580,4 @@ SceneRoots:
   - {fileID: 39584719}
   - {fileID: 62167000}
   - {fileID: 1646257141}
+  - {fileID: 281904104}
