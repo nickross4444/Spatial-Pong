@@ -21521,11 +21521,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   paddleSpeed: 1.2
   ballKickDelay: 1
-  kickForce: 1.5
+  kickForce: 1.3
   bounceBoostSpeed: 1
-  paddleBoostSpeed: 1.2
-  kickRandomRangeDegrees: 50
+  paddleBoostSpeed: 1.13
+  kickRandomRangeDegrees: 30
   possessionForce: 0.5
+  aimBoost: 6
   onPlayerWin:
     m_PersistentCalls:
       m_Calls:

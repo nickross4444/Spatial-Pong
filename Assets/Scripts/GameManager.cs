@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float paddleBoostSpeed = 1.1f;
     [SerializeField][Range(0, 90)] float kickRandomRangeDegrees = 20f;    // Controls the random angle variation in initial kick (in degrees)
     [SerializeField] float possessionForce = 2f;    // Force applied in possession direction on wall hits
+    [SerializeField] float aimBoost = 1f;
     int playerScore = 0, botScore = 0;
     public int PlayerScore => playerScore;      //this allows public access, but private set, while staying serializable
     public int BotScore => botScore;
@@ -111,9 +112,19 @@ public class GameManager : MonoBehaviour
             Debug.Log("Ball collided with: " + collision.gameObject.name);
             if (collision.gameObject.CompareTag("Paddle"))
             {
+                GameObject paddle = collision.gameObject;
                 // Transfer possession to the opposite player when a paddle hits the ball
-                playerHasPossession = collision.gameObject != playerPaddle;
+                playerHasPossession = paddle != playerPaddle;
                 ball.GetComponent<Rigidbody>().linearVelocity *= paddleBoostSpeed;
+
+
+                //aim the ball in the direction of the contact point from the center of the paddle
+                Vector3 aimVector = (ball.transform.position - paddle.transform.position);
+                Vector3 aimVector2D = Vector3.ProjectOnPlane(aimVector, paddle.transform.forward);  //remove the forward component of the aim vector(don't affect forward momentum)
+                float aimMag = aimVector2D.magnitude * aimBoost;
+                Vector3 aimVector2DNormalized = aimVector2D.normalized;
+
+                ball.GetComponent<Rigidbody>().linearVelocity += aimVector2DNormalized * aimMag;
             }
             else
             {
