@@ -18,6 +18,7 @@ public class GameSetup : MonoBehaviour
     GameObject SceneMesh, pongAnchorPrefabSpawner, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
+    [SerializeField] private GameObject playZonePrefab;
     [SerializeField]
     UnityEvent AfterWallSetup;
     GameObject player;
@@ -89,6 +90,20 @@ public class GameSetup : MonoBehaviour
         paddlePlane.GetComponent<MeshRenderer>().material = paddleControlAreaMaterial;
         paddlePlane.layer = LayerMask.NameToLayer("NoBall");
         PaddlePlane paddlePlaneComponent = paddlePlane.AddComponent<PaddlePlane>();
+        
+        // Spawn PlayZone
+        float paddleWidth = paddlePlane.GetComponent<Renderer>().bounds.size.x;
+        Quaternion playZoneRotation = paddlePlane.transform.rotation * Quaternion.Euler(90, 0, 0);
+        Vector3 spawnPosition = paddlePlane.transform.position + paddlePlane.transform.forward * 0.55f;
+        spawnPosition.y = 0.1f;
+        GameObject playZone = Instantiate(playZonePrefab, spawnPosition, playZoneRotation);
+        Transform quad = playZone.transform.Find("Emission"); 
+
+        if (quad != null)
+        {
+            Vector3 originalScale = quad.localScale;
+            quad.localScale = new Vector3(paddleWidth, originalScale.y, originalScale.z);
+        }
 
         //instantiate ball at the center of the court
         Vector3 ballPos = (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2;

@@ -845,7 +845,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -866,7 +866,7 @@ PrefabInstance:
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1811781811}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartGame
@@ -877,7 +877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: InitializeGame
+      value: ResetGame
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -885,7 +885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
+      value: WinloseSpawner, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -894,6 +894,10 @@ PrefabInstance:
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3335589673526833760, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: m_Name
@@ -21488,6 +21492,7 @@ MonoBehaviour:
   playerPaddle: {fileID: 1411374496820942510, guid: 78af509a1c7837442b32d0703f4cdc91, type: 3}
   goalMaterial: {fileID: 2100000, guid: fc44d4f8533e71f4aa4a1c0f342cc449, type: 2}
   paddleControlAreaMaterial: {fileID: 2100000, guid: 141bb00bfb29e9345bdf43ea6599a768, type: 2}
+  playZonePrefab: {fileID: 5192054059975924726, guid: 42924522a390f45469a7200256d378aa, type: 3}
   AfterWallSetup:
     m_PersistentCalls:
       m_Calls:
@@ -21495,6 +21500,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayZone, Assembly-CSharp
+        m_MethodName: SpawnBehindNoBallObject
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -21524,8 +21541,8 @@ MonoBehaviour:
   kickForce: 2
   bounceBoostSpeed: 1.08
   paddleBoostSpeed: 1.15
-  playerScore: 0
-  botScore: 0
+  playerScore: 10
+  botScore: 10
   onPlayerWin:
     m_PersistentCalls:
       m_Calls:
