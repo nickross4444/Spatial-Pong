@@ -12,7 +12,10 @@ public class WinloseSpawner : MonoBehaviour
     private bool hasSpawnedWinEffect = false;
     private bool hasSpawnedLoseEffect = false;
 
-    private void SpawnObjectAtCenter(GameObject effect, ref bool hasSpawned)
+    private GameObject currentWinEffect;
+    private GameObject currentLoseEffect;
+
+    private void SpawnObjectAtCenter(GameObject effect, ref bool hasSpawned, ref GameObject instance)
     {
         if (hasSpawned) return;
 
@@ -45,20 +48,19 @@ public class WinloseSpawner : MonoBehaviour
         
         Quaternion lookRotation = Quaternion.LookRotation(goal1.transform.position - centerPosition);
         
-        Instantiate(effect, centerPosition, lookRotation);
-        
+        instance = Instantiate(effect, centerPosition, lookRotation);
         hasSpawned = true;
     }
 
     public void WinEffect()
     {
-        SpawnObjectAtCenter(winEffect, ref hasSpawnedWinEffect);
+        SpawnObjectAtCenter(winEffect, ref hasSpawnedWinEffect, ref currentWinEffect);
         Invoke("SpawnFinalMenu", 4f);
     }
 
     public void LoseEffect()
     {
-        SpawnObjectAtCenter(loseEffect, ref hasSpawnedLoseEffect);
+        SpawnObjectAtCenter(loseEffect, ref hasSpawnedLoseEffect, ref currentLoseEffect);
         Invoke("SpawnFinalMenu", 4f);
     }
 
@@ -66,7 +68,26 @@ public class WinloseSpawner : MonoBehaviour
     {
         finalMenu.SetActive(true);
     }
+
+    public void ResetGame()
+    {
+        if (currentWinEffect != null)
+        {
+            Destroy(currentWinEffect);
+            currentWinEffect = null;
+        }
+
+        if (currentLoseEffect != null)
+        {
+            Destroy(currentLoseEffect);
+            currentLoseEffect = null;
+        }
+
+        hasSpawnedWinEffect = false;
+        hasSpawnedLoseEffect = false;
+    }
 }
+
 
 
 

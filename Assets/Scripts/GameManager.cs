@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField][Range(0, 90)] float kickRandomRangeDegrees = 20f;    // Controls the random angle variation in initial kick (in degrees)
     [SerializeField] float possessionForce = 2f;    // Force applied in possession direction on wall hits
     [SerializeField] float aimBoost = 1f;
+    [SerializeField] bool limitPaddleSpeed = true;
     int playerScore = 0, botScore = 0;
     public int PlayerScore => playerScore;      //this allows public access, but private set, while staying serializable
     public int BotScore => botScore;
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
+        PlayerPrefs.SetInt("LimitPaddleSpeed", limitPaddleSpeed ? 1 : 0);
     }
     void Update()
     {
@@ -141,7 +143,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player wins!");
             onPlayerWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            ResetBall(false);
             gameOver = true;
         }
         else if (botScore == maxScore)
