@@ -21540,6 +21540,7 @@ MonoBehaviour:
   kickRandomRangeDegrees: 30
   possessionForce: 0.5
   aimBoost: 6
+  limitPaddleSpeed: 0
   onPlayerWin:
     m_PersistentCalls:
       m_Calls:

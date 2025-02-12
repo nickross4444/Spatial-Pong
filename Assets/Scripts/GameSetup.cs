@@ -38,7 +38,6 @@ public class GameSetup : MonoBehaviour
 
     SystemHeadset headsetType;
 
-
     void Start()
     {
         headsetType = Utils.GetSystemHeadsetType();
@@ -88,33 +87,33 @@ public class GameSetup : MonoBehaviour
         paddlePlane.GetComponent<MeshRenderer>().material = paddleControlAreaMaterial;
         paddlePlane.layer = LayerMask.NameToLayer("NoBall");
         PaddlePlane paddlePlaneComponent = paddlePlane.AddComponent<PaddlePlane>();
-        
+
         // Spawn PlayZone
         Vector3 size = paddlePlane.GetComponent<Renderer>().bounds.size;
-        Vector3 rightVector = paddlePlane.transform.right; 
+        Vector3 rightVector = paddlePlane.transform.right;
         float paddleWidth;
         if (Mathf.Abs(Vector3.Dot(rightVector, Vector3.right)) > 0.9f)
         {
-            paddleWidth = size.x; 
+            paddleWidth = size.x;
         }
         else if (Mathf.Abs(Vector3.Dot(rightVector, Vector3.up)) > 0.9f)
         {
-            paddleWidth = size.y; 
+            paddleWidth = size.y;
         }
         else
         {
-            paddleWidth = size.z; 
+            paddleWidth = size.z;
         }
         Quaternion playZoneRotation = paddlePlane.transform.rotation * Quaternion.Euler(90, 0, 0);
         Vector3 spawnPosition = paddlePlane.transform.position + paddlePlane.transform.forward * 0.55f;
         spawnPosition.y = 0.1f;
         GameObject playZone = Instantiate(playZonePrefab, spawnPosition, playZoneRotation);
-        Transform quad = playZone.transform.Find("Emission"); 
+        Transform quad = playZone.transform.Find("Emission");
 
         if (quad != null)
         {
             Vector3 originalScale = quad.localScale;
-            float originalWidth = originalScale.x; 
+            float originalWidth = originalScale.x;
             float newWidth = Mathf.Max(originalWidth, paddleWidth);
             quad.localScale = new Vector3(newWidth, originalScale.y, originalScale.z);
         }

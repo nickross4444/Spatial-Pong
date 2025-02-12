@@ -9,6 +9,7 @@ public class PaddlePlane : MonoBehaviour
     private IPointable pointable;
     private float paddleSpeed;
     private GameManager gameManager;
+    bool limitPaddleSpeed = true;
 
     Vector3 targetPos;
 
@@ -16,6 +17,7 @@ public class PaddlePlane : MonoBehaviour
     {
         this.paddle = paddle;
         paddleSpeed = PlayerPrefs.GetFloat("PaddleSpeed", 1f);
+        limitPaddleSpeed = PlayerPrefs.GetInt("LimitPaddleSpeed") == 1;
         rayInteractable = GetComponent<RayInteractable>();
         pointable = GetComponent<IPointable>();
         rayInteractable.WhenStateChanged += HandleStateChanged;
@@ -27,7 +29,7 @@ public class PaddlePlane : MonoBehaviour
     {
         if (args.NewState != InteractableState.Hover && paddle != null)
         {
-            targetPos = paddle.transform.position;
+            //targetPos = paddle.transform.position;      //set tp current position
         }
     }
 
@@ -43,7 +45,14 @@ public class PaddlePlane : MonoBehaviour
     {
         if (targetPos != null && !gameManager.IsPaused)
         {
-            paddle.transform.position = Vector3.MoveTowards(paddle.transform.position, targetPos, paddleSpeed * Time.deltaTime);
+            if (limitPaddleSpeed)
+            {
+                paddle.transform.position = Vector3.MoveTowards(paddle.transform.position, targetPos, paddleSpeed * Time.deltaTime);
+            }
+            else
+            {
+                paddle.transform.position = targetPos;
+            }
         }
     }
 
