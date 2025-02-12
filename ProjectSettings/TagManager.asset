@@ -28,6 +28,7 @@ TagManager:
   - QDSUISection
   - Wall
   - Goal
+  - Record
   layers:
   - Default
   - TransparentFX
