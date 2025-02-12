@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField][Range(0, 90)] float kickRandomRangeDegrees = 20f;    // Controls the random angle variation in initial kick (in degrees)
     [SerializeField] float possessionForce = 2f;    // Force applied in possession direction on wall hits
     [SerializeField] float aimBoost = 1f;
+    [SerializeField] bool limitPaddleSpeed = true;
     int playerScore = 0, botScore = 0;
     public int PlayerScore => playerScore;      //this allows public access, but private set, while staying serializable
     public int BotScore => botScore;
@@ -36,22 +37,11 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     public GameObject pauseMenu;
-    
-    [Header("UI References")]
-    [SerializeField] private ScoreboardDisplay scoreboard;
-    
+
     void Start()
     {
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
-        
-        if (scoreboard == null)
-        {
-            scoreboard = FindObjectOfType<ScoreboardDisplay>();
-            if (scoreboard == null)
-            {
-                Debug.LogError("ScoreboardDisplay not found in the scene!");
-            }
-        }
+        PlayerPrefs.SetInt("LimitPaddleSpeed", limitPaddleSpeed ? 1 : 0);
     }
     void Update()
     {
@@ -84,11 +74,6 @@ public class GameManager : MonoBehaviour
         // Cache the goal directions
         playerGoalDirection = (playerGoal.transform.position - ballStartPos).normalized;
         botGoalDirection = (botGoal.transform.position - ballStartPos).normalized;
-        
-        if (scoreboard != null)
-        {
-            scoreboard.OnGameStart();
-        }
 
         botPaddle.GetComponent<PaddleBot>().StartBot(ball, botGoal.GetComponent<MeshFilter>().mesh);
         ball.GetComponent<Ball>().Initialize(this);
@@ -107,7 +92,6 @@ public class GameManager : MonoBehaviour
     {
         playerScore = 0;
         botScore = 0;
-        UpdateScoreboard();
     }
     public void OnBallCollision(Collision collision)
     {
@@ -117,7 +101,6 @@ public class GameManager : MonoBehaviour
             botScore++;
             lastWinnerWasPlayer = false;
             playerHasPossession = false;  // Bot gets possession after scoring
-            UpdateScoreboard();
         }
         else if (collision.gameObject == botGoal)
         {
@@ -125,7 +108,6 @@ public class GameManager : MonoBehaviour
             playerScore++;
             lastWinnerWasPlayer = true;
             playerHasPossession = true;   // Player gets possession after scoring
-            UpdateScoreboard();
         }
         else
         {
@@ -161,7 +143,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player wins!");
             onPlayerWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            ResetBall(false);
             gameOver = true;
         }
         else if (botScore == maxScore)
@@ -220,15 +201,6 @@ public class GameManager : MonoBehaviour
         rb.AddForce(kickDirection * kickForce, ForceMode.Impulse);
         ball.GetComponent<Ball>().audioSource.PlayOneShot(ball.GetComponent<Ball>().kickSound);
     }
-    
-    private void UpdateScoreboard()
-    {
-        if (scoreboard != null)
-        {
-            scoreboard.UpdateScore(playerScore, botScore);
-        }
-    }
-
     public void QuitApp()
     {
         //!!TODO: add a fade to black here

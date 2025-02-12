@@ -17,6 +17,7 @@ public class GameSetup : MonoBehaviour
     GameObject SceneMesh, pongAnchorPrefabSpawner, PongPassthrough, WorldPassthrough, ball, botPaddle, playerPaddle;
     [SerializeField]
     Material goalMaterial, paddleControlAreaMaterial;
+    [SerializeField] private GameObject playZonePrefab;
     [SerializeField]
     UnityEvent AfterWallSetup;
     GameObject player;
@@ -24,6 +25,7 @@ public class GameSetup : MonoBehaviour
     float goalOffset = 0.25f;
     float playerPaddleOffset = 1.15f;
     float botPaddleOffset = 1f;
+    float paddlePlaneWidthScaler = 5f;
     [SerializeField]
     bool usePassthrough = true;
     [SerializeField]
@@ -36,7 +38,6 @@ public class GameSetup : MonoBehaviour
     [SerializeField] AudioClip courtSpawnAudio;
 
     SystemHeadset headsetType;
-
 
     void Start()
     {
@@ -87,6 +88,39 @@ public class GameSetup : MonoBehaviour
         paddlePlane.GetComponent<MeshRenderer>().material = paddleControlAreaMaterial;
         paddlePlane.layer = LayerMask.NameToLayer("NoBall");
         PaddlePlane paddlePlaneComponent = paddlePlane.AddComponent<PaddlePlane>();
+
+        // Spawn PlayZone
+        Vector3 size = paddlePlane.GetComponent<Renderer>().bounds.size;
+        Vector3 rightVector = paddlePlane.transform.right;
+        float paddleWidth;
+        if (Mathf.Abs(Vector3.Dot(rightVector, Vector3.right)) > 0.9f)
+        {
+            paddleWidth = size.x;
+        }
+        else if (Mathf.Abs(Vector3.Dot(rightVector, Vector3.up)) > 0.9f)
+        {
+            paddleWidth = size.y;
+        }
+        else
+        {
+            paddleWidth = size.z;
+        }
+        Quaternion playZoneRotation = paddlePlane.transform.rotation * Quaternion.Euler(90, 0, 0);
+        Vector3 spawnPosition = paddlePlane.transform.position + paddlePlane.transform.forward * 0.55f;
+        spawnPosition.y = 0.1f;
+        GameObject playZone = Instantiate(playZonePrefab, spawnPosition, playZoneRotation);
+        Transform quad = playZone.transform.Find("Emission");
+
+        if (quad != null)
+        {
+            Vector3 originalScale = quad.localScale;
+            float originalWidth = originalScale.x;
+            float newWidth = Mathf.Max(originalWidth, paddleWidth);
+            quad.localScale = new Vector3(newWidth, originalScale.y, originalScale.z);
+        }
+
+        //After spawning playzone, scale the paddle plane to be larger:
+        paddlePlane.transform.localScale = Vector3.Scale(paddlePlane.transform.localScale, new Vector3(paddlePlaneWidthScaler, 1, 1));
 
         //instantiate ball at the center of the court
         Vector3 ballPos = (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2;
@@ -198,4 +232,5 @@ public class GameSetup : MonoBehaviour
         wall.tag = "Goal";
         SetupAudioSource.PlayOneShot(wallSelectAudio);
     }
+
 }
