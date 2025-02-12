@@ -25,6 +25,7 @@ public class GameSetup : MonoBehaviour
     float goalOffset = 0.25f;
     float playerPaddleOffset = 1.15f;
     float botPaddleOffset = 1f;
+    float paddlePlaneWidthScaler = 5f;
     [SerializeField]
     bool usePassthrough = true;
     [SerializeField]
@@ -117,6 +118,9 @@ public class GameSetup : MonoBehaviour
             float newWidth = Mathf.Max(originalWidth, paddleWidth);
             quad.localScale = new Vector3(newWidth, originalScale.y, originalScale.z);
         }
+
+        //After spawning playzone, scale the paddle plane to be larger:
+        paddlePlane.transform.localScale = Vector3.Scale(paddlePlane.transform.localScale, new Vector3(paddlePlaneWidthScaler, 1, 1));
 
         //instantiate ball at the center of the court
         Vector3 ballPos = (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2;
