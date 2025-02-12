@@ -176,6 +176,7 @@ public class GameSetup : MonoBehaviour
             MakeGoal(wall);
             if (courtWalls.Count == 2)
             {
+
                 if (headsetType == SystemHeadset.Oculus_Link_Quest_2 || headsetType == SystemHeadset.Oculus_Quest_2)
                 {
                     Debug.Log("Device name : Quest 2");
