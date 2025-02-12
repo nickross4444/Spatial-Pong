@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
             if (isPaused)
             {
                 ResumeGame();
-                onResume?.Invoke();
                 //menu is set false in inspector
             }
             else
@@ -85,6 +84,7 @@ public class GameManager : MonoBehaviour
         {
             obj.gameObject.SetActive(false);
         }
+        isPaused = false;
         ResetScore();
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
     }
@@ -144,6 +144,7 @@ public class GameManager : MonoBehaviour
             onPlayerWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             gameOver = true;
+            isPaused = true;
         }
         else if (botScore == maxScore)
         {
@@ -151,6 +152,7 @@ public class GameManager : MonoBehaviour
             onBotWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             gameOver = true;
+            isPaused = true;
         }
         ResetBall(!gameOver);
     }
@@ -231,6 +233,7 @@ public class GameManager : MonoBehaviour
             rb.linearVelocity = storedBallVelocity;
         }
         isPaused = false;
+        onResume?.Invoke();
     }
     public void MainMenu()
     {
