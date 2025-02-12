@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Gameplay Settings")]
     [SerializeField] float paddleSpeed = 2f;
     [SerializeField] float ballKickDelay = 1.5f;
-    [SerializeField] float kickForce = 1;
+    [SerializeField] public float kickForce = 1;
     [SerializeField] float bounceBoostSpeed = 1.02f;
     [SerializeField] float paddleBoostSpeed = 1.1f;
     [SerializeField][Range(0, 90)] float kickRandomRangeDegrees = 20f;    // Controls the random angle variation in initial kick (in degrees)
