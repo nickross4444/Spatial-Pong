@@ -143,7 +143,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("Player wins!");
             onPlayerWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            ResetBall(false);
             gameOver = true;
         }
         else if (botScore == maxScore)
