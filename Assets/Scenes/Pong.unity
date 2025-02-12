@@ -3545,13 +3545,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d01cffaab79d2c47819829754985aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCamera: {fileID: 326070121}
-  planeDistance: 0.5
-  scoreboardSize: {x: 400, y: 100}
-  fontSize: 72
-  textColor: {r: 1, g: 1, b: 1, a: 1}
-  topOffset: 50
-  backgroundColor: {r: 0, g: 0, b: 0, a: 0.8}
+  heightOffset: 1
+  forwardOffset: 2
+  scoreboardRotation: {x: 15, y: 0, z: 0}
 --- !u!4 &281904104
 Transform:
   m_ObjectHideFlags: 0
@@ -3561,7 +3557,7 @@ Transform:
   m_GameObject: {fileID: 281904102}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.75, y: 20, z: 1.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10271,7 +10267,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 215
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

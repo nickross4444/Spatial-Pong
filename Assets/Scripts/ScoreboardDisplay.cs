@@ -9,15 +9,31 @@ public class ScoreboardDisplay : MonoBehaviour
     private TextMeshProUGUI playerScoreText;
     private TextMeshProUGUI botScoreText;
     
-    [Header("VR UI Settings")]
-    [SerializeField] private float distanceFromCamera = 2f;
-    [SerializeField] private float verticalOffset = 0.5f;
-    
-    private Transform cameraRig;
+  
     private bool isGameStarted = false;
     
+    
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        Instance = null; // Reset the singleton instance when domain reloads
+    }
+
     private void Awake()
     {
+        
+        var existingInstances = FindObjectsByType<ScoreboardDisplay>(FindObjectsSortMode.None);
+        if (existingInstances.Length > 1)
+        {
+            foreach (var instance in existingInstances)
+            {
+                if (instance != this && instance.gameObject != gameObject)
+                {
+                    Destroy(instance.gameObject);
+                }
+            }
+        }
+        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -26,20 +42,8 @@ public class ScoreboardDisplay : MonoBehaviour
 
         Instance = this;
         gameObject.name = "ScoreboardManager";
-        
-        if (transform.parent != null)
-        {
-            transform.SetParent(null);
-        }
-
-        DontDestroyOnLoad(gameObject);
-        
-        cameraRig = GameObject.Find("[BuildingBlock] Camera Rig")?.transform;
-        if (cameraRig == null)
-        {
-            Debug.LogError("[ScoreboardDisplay] Camera Rig not found!");
-            return;
-        }
+        DontDestroyOnLoad(gameObject); // Keep the scoreboard across scene loads if needed
+  
 
         InitializeScoreboard();
         // Initially hide the scoreboard
@@ -48,22 +52,28 @@ public class ScoreboardDisplay : MonoBehaviour
 
     private void InitializeScoreboard()
     {
-        // Create and setup canvas
+        if (scoreboardCanvas != null)
+        {
+            Debug.Log("[ScoreboardDisplay] Scoreboard canvas already exists, skipping initialization");
+            return;
+        }
+        
         GameObject canvasObj = new GameObject("ScoreboardCanvas");
         canvasObj.transform.SetParent(transform);
         canvasObj.layer = LayerMask.NameToLayer("UI");
-        
+    
         scoreboardCanvas = canvasObj.AddComponent<Canvas>();
         scoreboardCanvas.renderMode = RenderMode.WorldSpace;
-        
+    
         RectTransform canvasRect = canvasObj.GetComponent<RectTransform>();
         canvasRect.sizeDelta = new Vector2(1f, 0.3f);
-        
-        // Don't use a canvas scaler for world space VR
+    
+        // position and rotation
+        canvasObj.transform.position = new Vector3(0f, 2f, 2f); 
+        canvasObj.transform.rotation = Quaternion.Euler(15f, 0f, 0f); 
+    
         canvasObj.AddComponent<GraphicRaycaster>();
-
-        // Set the world scale and flip the canvas to prevent mirroring
-        canvasObj.transform.localScale = new Vector3(-1f, 1f, 1f);
+        canvasObj.transform.localScale = new Vector3(1f, 1f, 1f);
 
         CreateScoreDisplays();
     }
@@ -150,21 +160,6 @@ public class ScoreboardDisplay : MonoBehaviour
         tmp.text = "-";
     }
     
-    private void LateUpdate()
-    {
-        if (!isGameStarted || scoreboardCanvas == null || cameraRig == null)
-            return;
-
-        Vector3 forward = cameraRig.forward;
-        forward.y = 0;
-        forward.Normalize();
-
-        Vector3 position = cameraRig.position + forward * distanceFromCamera;
-        position.y = cameraRig.position.y + verticalOffset;
-        
-        transform.position = position;
-        transform.rotation = Quaternion.LookRotation(-forward, Vector3.up);
-    }
 
     private void SetScoreText(string playerScore, string botScore)
     {
