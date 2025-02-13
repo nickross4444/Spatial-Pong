@@ -3,67 +3,71 @@ using UnityEngine.Events;
 using Oculus.Interaction;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 
 public class SettingsController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameManager gameManager;
-    [SerializeField] private GameObject worldPassthrough;
-    [SerializeField] private AudioSource audioSource;
-    
+    [SerializeField] private AudioMixer audioMixer;
+
     [Header("Volume Controls")]
     [SerializeField] private Slider volumeSlider;
-    [SerializeField] private TextMeshProUGUI volumeText;
-    
+
     [Header("Ball Speed Controls")]
     [SerializeField] private Slider ballSpeedSlider;
-    [SerializeField] private TextMeshProUGUI ballSpeedText;
-    
+
     [Header("Passthrough Toggle")]
     [SerializeField] private Toggle passthroughToggle;
-    
+    private void Awake()
+    {
+        if (gameManager == null)
+        {
+            gameManager = FindFirstObjectByType<GameManager>();
+        }
+    }
     private void Start()
     {
         // Initialize volume slider
         volumeSlider.onValueChanged.AddListener(HandleVolumeChange);
-        volumeSlider.value = audioSource.volume;
-        // UpdateVolumeText(volumeSlider.value);
-        
+
         // Initialize ball speed slider
         ballSpeedSlider.onValueChanged.AddListener(HandleBallSpeedChange);
-        ballSpeedSlider.value = gameManager.kickForce;
-        // UpdateBallSpeedText(ballSpeedSlider.value);
-        
+
         // Initialize passthrough toggle
         passthroughToggle.onValueChanged.AddListener(HandlePassthroughToggle);
-        passthroughToggle.isOn = worldPassthrough.activeSelf;
     }
-    
+    void OnEnable()
+    {
+        volumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.5f);
+        ballSpeedSlider.value = PlayerPrefs.GetFloat("KickForce", 1f);
+        passthroughToggle.isOn = PlayerPrefs.GetInt("UsePassthrough", 1) == 1;
+    }
+
     private void HandleVolumeChange(float value)
     {
-        audioSource.volume = value;
-        // UpdateVolumeText(value);
+        float volume = Mathf.Log10(Mathf.Max(0.0001f, value)) * 20f;
+        audioMixer.SetFloat("MasterVolume", volume);
+        PlayerPrefs.SetFloat("MasterVolume", value);
     }
-    
-    // private void UpdateVolumeText(float value)
-    // {
-    //     volumeText.text = $"Volume: {(value * 100):F0}%";
-    // }
-    
+
+
     private void HandleBallSpeedChange(float value)
     {
         gameManager.kickForce = value;
-        // UpdateBallSpeedText(value);
+        PlayerPrefs.SetFloat("KickForce", value);
     }
-    
-    // private void UpdateBallSpeedText(float value)
-    // {
-    //     ballSpeedText.text = $"Ball Speed: {value:F1}";
-    // }
-    
+
     private void HandlePassthroughToggle(bool isOn)
     {
-        worldPassthrough.SetActive(isOn);
+        gameManager.usePassthrough = isOn;
+        GameSetup gameSetup = gameManager.GetComponent<GameSetup>();
+        gameSetup.SetPongPassthrough(gameSetup.setupComplete);      //set to pong passthrough if setup is complete
+        PlayerPrefs.SetInt("UsePassthrough", isOn ? 1 : 0);
+    }
+    public void ToggleSettings()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
     }
 }

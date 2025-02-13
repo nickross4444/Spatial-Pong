@@ -27,8 +27,6 @@ public class GameSetup : MonoBehaviour
     float botPaddleOffset = 1f;
     float paddlePlaneWidthScaler = 5f;
     [SerializeField]
-    bool usePassthrough = true;
-    [SerializeField]
     float gameStartDelay = 3f;
     AudioSource SetupAudioSource;
     [Header("Audio")]
@@ -38,17 +36,22 @@ public class GameSetup : MonoBehaviour
     [SerializeField] AudioClip courtSpawnAudio;
 
     SystemHeadset headsetType;
-
+    GameManager gameManager;
+    public bool setupComplete { get; private set; } = false;
+    void Awake()
+    {
+        SetupAudioSource = GetComponent<AudioSource>();
+        gameManager = GetComponent<GameManager>();
+        player = GameObject.FindGameObjectWithTag("MainCamera");
+    }
     void Start()
     {
         headsetType = Utils.GetSystemHeadsetType();
         Debug.Log("Current Headset Type: " + headsetType);
 
-        player = GameObject.FindGameObjectWithTag("MainCamera");
-        WorldPassthrough.SetActive(usePassthrough);
+        WorldPassthrough.SetActive(gameManager.usePassthrough);
         PongPassthrough.SetActive(false);
         StartCoroutine(GetWalls());
-        SetupAudioSource = GetComponent<AudioSource>();
     }
     public IEnumerator GetWalls()
     {
@@ -125,9 +128,9 @@ public class GameSetup : MonoBehaviour
         //instantiate ball at the center of the court
         Vector3 ballPos = (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2;
         ballPos.y = floor.transform.position.y + spawnHeight;
-        
+
         ScoreboardDisplay.Instance?.SetBallSpawnPosition(ballPos);
-        
+
         ball = Instantiate(ball, ballPos, Quaternion.identity);
         //instantiate player paddle 1 unit in front of the first wall, with the same rotation as the first wall
         Vector3 playerPos = courtWalls[0].transform.position + courtWalls[0].transform.forward * playerPaddleOffset;
@@ -143,6 +146,7 @@ public class GameSetup : MonoBehaviour
         SetPongPassthrough(true);
         SetupAudioSource.PlayOneShot(courtSpawnAudio);
         StartCoroutine(StartBallAfterDelay());
+        setupComplete = true;
     }
 
     IEnumerator CallTransitionWhenReady()
@@ -165,10 +169,10 @@ public class GameSetup : MonoBehaviour
         yield return new WaitForSeconds(gameStartDelay);
         GetComponent<GameManager>().StartBall(ball, playerPaddle, botPaddle, courtWalls[0], courtWalls[1]);
     }
-    void SetPongPassthrough(bool active)
+    public void SetPongPassthrough(bool active)
     {
-        PongPassthrough.SetActive(active && usePassthrough);
-        WorldPassthrough.SetActive(!active && usePassthrough);
+        PongPassthrough.SetActive(active && gameManager.usePassthrough);
+        WorldPassthrough.SetActive(!active && gameManager.usePassthrough);
     }
 
     // Define handler methods
@@ -236,5 +240,4 @@ public class GameSetup : MonoBehaviour
         wall.tag = "Goal";
         SetupAudioSource.PlayOneShot(wallSelectAudio);
     }
-
 }
