@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
@@ -9,13 +10,14 @@ public class GameManager : MonoBehaviour
     [Header("Gameplay Settings")]
     [SerializeField] float paddleSpeed = 2f;
     [SerializeField] float ballKickDelay = 1.5f;
-    [SerializeField] float kickForce = 1;
+    [SerializeField] public float kickForce = 1;
     [SerializeField] float bounceBoostSpeed = 1.02f;
     [SerializeField] float paddleBoostSpeed = 1.1f;
     [SerializeField][Range(0, 90)] float kickRandomRangeDegrees = 20f;    // Controls the random angle variation in initial kick (in degrees)
     [SerializeField] float possessionForce = 2f;    // Force applied in possession direction on wall hits
     [SerializeField] float aimBoost = 1f;
     [SerializeField] bool limitPaddleSpeed = true;
+    public bool usePassthrough = true;
     int playerScore = 0, botScore = 0;
     public int PlayerScore => playerScore;      //this allows public access, but private set, while staying serializable
     public int BotScore => botScore;
@@ -28,6 +30,7 @@ public class GameManager : MonoBehaviour
     private bool playerHasPossession = true;  // Tracks who has possession of the ball
     private Vector3 playerGoalDirection;    // Cached direction from center to player goal
     private Vector3 botGoalDirection;       // Cached direction from center to bot goal
+    private ScoreboardDisplay scoreboardDisplay;
 
     [Header("Win Events")]
     public UnityEvent onPlayerWin;
@@ -37,11 +40,28 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     public GameObject pauseMenu;
+    public AudioMixer audioMixer;
 
     void Start()
     {
+        //non-adjustable settings
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
         PlayerPrefs.SetInt("LimitPaddleSpeed", limitPaddleSpeed ? 1 : 0);
+
+        //load adjustable settings from player prefs
+        kickForce = PlayerPrefs.GetFloat("KickForce");
+        usePassthrough = PlayerPrefs.GetInt("UsePassthrough") == 1;
+        float volumeValue = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        float DBVolume = Mathf.Log10(Mathf.Max(0.0001f, volumeValue)) * 20f;
+        audioMixer.SetFloat("MasterVolume", DBVolume);
+
+        scoreboardDisplay = ScoreboardDisplay.Instance;
+        if (scoreboardDisplay == null)
+        {
+            Debug.LogWarning("ScoreboardDisplay not found - creating new instance");
+            GameObject scoreboardObj = new GameObject("ScoreboardManager");
+            scoreboardDisplay = scoreboardObj.AddComponent<ScoreboardDisplay>();
+        }
     }
     void Update()
     {
@@ -51,7 +71,6 @@ public class GameManager : MonoBehaviour
             if (isPaused)
             {
                 ResumeGame();
-                onResume?.Invoke();
                 //menu is set false in inspector
             }
             else
@@ -77,6 +96,9 @@ public class GameManager : MonoBehaviour
 
         botPaddle.GetComponent<PaddleBot>().StartBot(ball, botGoal.GetComponent<MeshFilter>().mesh);
         ball.GetComponent<Ball>().Initialize(this);
+
+        scoreboardDisplay.OnGameStart();
+
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
     }
     public void RestartGame()
@@ -85,6 +107,7 @@ public class GameManager : MonoBehaviour
         {
             obj.gameObject.SetActive(false);
         }
+        isPaused = false;
         ResetScore();
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
     }
@@ -101,6 +124,8 @@ public class GameManager : MonoBehaviour
             botScore++;
             lastWinnerWasPlayer = false;
             playerHasPossession = false;  // Bot gets possession after scoring
+
+            scoreboardDisplay.UpdateScore(playerScore, botScore);
         }
         else if (collision.gameObject == botGoal)
         {
@@ -108,6 +133,8 @@ public class GameManager : MonoBehaviour
             playerScore++;
             lastWinnerWasPlayer = true;
             playerHasPossession = true;   // Player gets possession after scoring
+
+            scoreboardDisplay.UpdateScore(playerScore, botScore);
         }
         else
         {
@@ -144,6 +171,7 @@ public class GameManager : MonoBehaviour
             onPlayerWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             gameOver = true;
+            isPaused = true;
         }
         else if (botScore == maxScore)
         {
@@ -151,6 +179,7 @@ public class GameManager : MonoBehaviour
             onBotWin?.Invoke();
             ball.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             gameOver = true;
+            isPaused = true;
         }
         ResetBall(!gameOver);
     }
@@ -229,8 +258,13 @@ public class GameManager : MonoBehaviour
             Rigidbody rb = ball.GetComponent<Rigidbody>();
             rb.isKinematic = false;
             rb.linearVelocity = storedBallVelocity;
+            if (storedBallVelocity.magnitude < 0.01f)
+            {
+                ResetBall(true);
+            }
         }
         isPaused = false;
+        onResume?.Invoke();
     }
     public void MainMenu()
     {
