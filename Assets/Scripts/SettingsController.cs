@@ -40,8 +40,8 @@ public class SettingsController : MonoBehaviour
     }
     void OnEnable()
     {
-        volumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.5f);
-        ballSpeedSlider.value = PlayerPrefs.GetFloat("KickForce", 1f);
+        volumeSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        ballSpeedSlider.value = PlayerPrefs.GetFloat("KickForce", 1.2f);
         passthroughToggle.isOn = PlayerPrefs.GetInt("UsePassthrough", 1) == 1;
     }
 
