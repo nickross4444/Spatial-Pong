@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("LimitPaddleSpeed", limitPaddleSpeed ? 1 : 0);
 
         //load adjustable settings from player prefs
-        kickForce = PlayerPrefs.GetFloat("KickForce");
+        kickForce = PlayerPrefs.GetFloat("KickForce", 1.2f);
         usePassthrough = PlayerPrefs.GetInt("UsePassthrough") == 1;
         float volumeValue = PlayerPrefs.GetFloat("MasterVolume", 1f);
         float DBVolume = Mathf.Log10(Mathf.Max(0.0001f, volumeValue)) * 20f;
