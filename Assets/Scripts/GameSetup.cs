@@ -125,6 +125,9 @@ public class GameSetup : MonoBehaviour
         //instantiate ball at the center of the court
         Vector3 ballPos = (courtWalls[0].transform.position + courtWalls[1].transform.position) / 2;
         ballPos.y = floor.transform.position.y + spawnHeight;
+        
+        ScoreboardDisplay.Instance?.SetBallSpawnPosition(ballPos);
+        
         ball = Instantiate(ball, ballPos, Quaternion.identity);
         //instantiate player paddle 1 unit in front of the first wall, with the same rotation as the first wall
         Vector3 playerPos = courtWalls[0].transform.position + courtWalls[0].transform.forward * playerPaddleOffset;

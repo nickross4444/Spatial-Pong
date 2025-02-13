@@ -28,7 +28,8 @@ public class GameManager : MonoBehaviour
     private bool playerHasPossession = true;  // Tracks who has possession of the ball
     private Vector3 playerGoalDirection;    // Cached direction from center to player goal
     private Vector3 botGoalDirection;       // Cached direction from center to bot goal
-
+    private ScoreboardDisplay scoreboardDisplay;
+    
     [Header("Win Events")]
     public UnityEvent onPlayerWin;
     public UnityEvent onBotWin;
@@ -42,6 +43,14 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
         PlayerPrefs.SetInt("LimitPaddleSpeed", limitPaddleSpeed ? 1 : 0);
+        
+        scoreboardDisplay = ScoreboardDisplay.Instance;
+        if (scoreboardDisplay == null)
+        {
+            Debug.LogWarning("ScoreboardDisplay not found - creating new instance");
+            GameObject scoreboardObj = new GameObject("ScoreboardManager");
+            scoreboardDisplay = scoreboardObj.AddComponent<ScoreboardDisplay>();
+        }
     }
     void Update()
     {
@@ -76,6 +85,9 @@ public class GameManager : MonoBehaviour
 
         botPaddle.GetComponent<PaddleBot>().StartBot(ball, botGoal.GetComponent<MeshFilter>().mesh);
         ball.GetComponent<Ball>().Initialize(this);
+        
+        scoreboardDisplay.OnGameStart();
+        
         StartCoroutine(KickAfterDelay(ball.GetComponent<Rigidbody>(), ballKickDelay));
     }
     public void RestartGame()
@@ -101,6 +113,8 @@ public class GameManager : MonoBehaviour
             botScore++;
             lastWinnerWasPlayer = false;
             playerHasPossession = false;  // Bot gets possession after scoring
+            
+            scoreboardDisplay.UpdateScore(playerScore, botScore);
         }
         else if (collision.gameObject == botGoal)
         {
@@ -108,6 +122,8 @@ public class GameManager : MonoBehaviour
             playerScore++;
             lastWinnerWasPlayer = true;
             playerHasPossession = true;   // Player gets possession after scoring
+            
+            scoreboardDisplay.UpdateScore(playerScore, botScore);
         }
         else
         {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ScoreboardDisplay : MonoBehaviour
@@ -9,9 +10,12 @@ public class ScoreboardDisplay : MonoBehaviour
     private TextMeshProUGUI playerScoreText;
     private TextMeshProUGUI botScoreText;
     
-  
-    private bool isGameStarted = false;
+    [FormerlySerializedAs("scoreboardPosition")] [SerializeField] private Vector3 scoreboardOffset = new Vector3(0f, 2f, 2f);
+    [SerializeField] private Vector3 scoreboardRotation = new Vector3(15f, 0f, 0f);
+    [SerializeField] private Vector2 canvasSize = new Vector2(1f, 0.3f);
     
+    private bool isGameStarted = false;
+    private Vector3 ballSpawnPosition;
     
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
@@ -21,19 +25,6 @@ public class ScoreboardDisplay : MonoBehaviour
 
     private void Awake()
     {
-        
-        var existingInstances = FindObjectsByType<ScoreboardDisplay>(FindObjectsSortMode.None);
-        if (existingInstances.Length > 1)
-        {
-            foreach (var instance in existingInstances)
-            {
-                if (instance != this && instance.gameObject != gameObject)
-                {
-                    Destroy(instance.gameObject);
-                }
-            }
-        }
-        
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -41,41 +32,78 @@ public class ScoreboardDisplay : MonoBehaviour
         }
 
         Instance = this;
-        gameObject.name = "ScoreboardManager";
-        DontDestroyOnLoad(gameObject); // Keep the scoreboard across scene loads if needed
-  
-
+        DontDestroyOnLoad(gameObject);
+        
+        // Initialize immediately but hide until game starts
         InitializeScoreboard();
-        // Initially hide the scoreboard
         SetScoreboardVisibility(false);
+        
+        gameObject.layer = LayerMask.NameToLayer("UI");
     }
 
+    public void SetBallSpawnPosition(Vector3 position)
+    {
+        ballSpawnPosition = position;
+        if (scoreboardCanvas != null)
+        {
+            // Position the scoreboard relative to the ball spawn position
+            scoreboardCanvas.transform.position = ballSpawnPosition + scoreboardOffset;
+        }
+    }
+    
+    private void Start()
+    {
+        // Position the scoreboard relative to the main camera if it exists
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null && scoreboardCanvas != null)
+        {
+            UpdateScoreboardRotation(mainCamera);
+        }
+    }
+    
+    private void UpdateScoreboardRotation(Camera camera)
+    {
+        // Calculate direction from scoreboard to camera
+        Vector3 directionToCamera = camera.transform.position - scoreboardCanvas.transform.position;
+        
+        // Create rotation to face camera while keeping vertical orientation
+        Quaternion lookRotation = Quaternion.LookRotation(-directionToCamera, Vector3.up);
+        
+        // Apply the base rotation to face the camera
+        scoreboardCanvas.transform.rotation = lookRotation;
+        
+        // Apply the additional custom rotation
+        scoreboardCanvas.transform.Rotate(scoreboardRotation);
+    }
+    
     private void InitializeScoreboard()
     {
         if (scoreboardCanvas != null)
         {
-            Debug.Log("[ScoreboardDisplay] Scoreboard canvas already exists, skipping initialization");
+            Debug.Log("[ScoreboardDisplay] Scoreboard canvas already exists");
             return;
         }
         
+        // Create canvas with world space render mode
         GameObject canvasObj = new GameObject("ScoreboardCanvas");
         canvasObj.transform.SetParent(transform);
-        canvasObj.layer = LayerMask.NameToLayer("UI");
-    
+        
         scoreboardCanvas = canvasObj.AddComponent<Canvas>();
         scoreboardCanvas.renderMode = RenderMode.WorldSpace;
-    
-        RectTransform canvasRect = canvasObj.GetComponent<RectTransform>();
-        canvasRect.sizeDelta = new Vector2(1f, 0.3f);
-    
-        // position and rotation
-        canvasObj.transform.position = new Vector3(0f, 2f, 2f); 
-        canvasObj.transform.rotation = Quaternion.Euler(15f, 0f, 0f); 
-    
+        
+        // Add necessary components
         canvasObj.AddComponent<GraphicRaycaster>();
-        canvasObj.transform.localScale = new Vector3(1f, 1f, 1f);
-
+        CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
+        scaler.dynamicPixelsPerUnit = 100f;
+        
+        // Set up the canvas rect transform
+        RectTransform canvasRect = canvasObj.GetComponent<RectTransform>();
+        canvasRect.sizeDelta = canvasSize;
+        
+        // Create the UI elements
         CreateScoreDisplays();
+        
+        Debug.Log("[ScoreboardDisplay] Scoreboard initialized successfully");
     }
     
     private void CreateScoreDisplays()
@@ -173,13 +201,24 @@ public class ScoreboardDisplay : MonoBehaviour
     
     public void UpdateScore(int playerScore, int botScore)
     {
+        if (playerScoreText == null || botScoreText == null)
+        {
+            Debug.LogError("[ScoreboardDisplay] Score text components are null!");
+            return;
+        }
+        
         SetScoreText(playerScore.ToString(), botScore.ToString());
+        Debug.Log($"[ScoreboardDisplay] Scores updated - Player: {playerScore}, Bot: {botScore}");
     }
 
     public void OnGameStart()
     {
         isGameStarted = true;
         SetScoreboardVisibility(true);
+        Debug.Log("[ScoreboardDisplay] Game started - Scoreboard visible");
+        
+        // Initialize scores to 0
+        UpdateScore(0, 0);
     }
 
     private void SetScoreboardVisibility(bool visible)
@@ -187,6 +226,16 @@ public class ScoreboardDisplay : MonoBehaviour
         if (scoreboardCanvas != null)
         {
             scoreboardCanvas.gameObject.SetActive(visible);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        Camera mainCamera = Camera.main;
+        if (scoreboardCanvas != null && Camera.main != null)
+        {
+            // Keep the same position but update rotation to face away from camera
+            UpdateScoreboardRotation(mainCamera);
         }
     }
 }
