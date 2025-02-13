@@ -9,14 +9,16 @@ public class ScoreboardDisplay : MonoBehaviour
     private Canvas scoreboardCanvas;
     private TextMeshProUGUI playerScoreText;
     private TextMeshProUGUI botScoreText;
-    
-    [FormerlySerializedAs("scoreboardPosition")] [SerializeField] private Vector3 scoreboardOffset = new Vector3(0f, 2f, 2f);
+
+    [FormerlySerializedAs("scoreboardPosition")][SerializeField] private Vector3 scoreboardOffset = new Vector3(0f, 2f, 2f);
     [SerializeField] private Vector3 scoreboardRotation = new Vector3(15f, 0f, 0f);
     [SerializeField] private Vector2 canvasSize = new Vector2(1f, 0.3f);
-    
+
+    [SerializeField] private TMPro.TMP_FontAsset textFont;
+
     private bool isGameStarted = false;
     private Vector3 ballSpawnPosition;
-    
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
     {
@@ -33,11 +35,11 @@ public class ScoreboardDisplay : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        
+
         // Initialize immediately but hide until game starts
         InitializeScoreboard();
         SetScoreboardVisibility(false);
-        
+
         gameObject.layer = LayerMask.NameToLayer("UI");
     }
 
@@ -50,7 +52,7 @@ public class ScoreboardDisplay : MonoBehaviour
             scoreboardCanvas.transform.position = ballSpawnPosition + scoreboardOffset;
         }
     }
-    
+
     private void Start()
     {
         // Position the scoreboard relative to the main camera if it exists
@@ -60,22 +62,22 @@ public class ScoreboardDisplay : MonoBehaviour
             UpdateScoreboardRotation(mainCamera);
         }
     }
-    
+
     private void UpdateScoreboardRotation(Camera camera)
     {
         // Calculate direction from scoreboard to camera
         Vector3 directionToCamera = camera.transform.position - scoreboardCanvas.transform.position;
-        
+
         // Create rotation to face camera while keeping vertical orientation
         Quaternion lookRotation = Quaternion.LookRotation(-directionToCamera, Vector3.up);
-        
+
         // Apply the base rotation to face the camera
         scoreboardCanvas.transform.rotation = lookRotation;
-        
+
         // Apply the additional custom rotation
         scoreboardCanvas.transform.Rotate(scoreboardRotation);
     }
-    
+
     private void InitializeScoreboard()
     {
         if (scoreboardCanvas != null)
@@ -83,49 +85,49 @@ public class ScoreboardDisplay : MonoBehaviour
             Debug.Log("[ScoreboardDisplay] Scoreboard canvas already exists");
             return;
         }
-        
+
         // Create canvas with world space render mode
         GameObject canvasObj = new GameObject("ScoreboardCanvas");
         canvasObj.transform.SetParent(transform);
-        
+
         scoreboardCanvas = canvasObj.AddComponent<Canvas>();
         scoreboardCanvas.renderMode = RenderMode.WorldSpace;
-        
+
         // Add necessary components
         canvasObj.AddComponent<GraphicRaycaster>();
         CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
         scaler.dynamicPixelsPerUnit = 100f;
-        
+
         // Set up the canvas rect transform
         RectTransform canvasRect = canvasObj.GetComponent<RectTransform>();
         canvasRect.sizeDelta = canvasSize;
-        
+
         // Create the UI elements
         CreateScoreDisplays();
-        
+
         Debug.Log("[ScoreboardDisplay] Scoreboard initialized successfully");
     }
-    
+
     private void CreateScoreDisplays()
     {
         // Create background
         GameObject backgroundObj = new GameObject("Background");
         backgroundObj.transform.SetParent(scoreboardCanvas.transform, false);
         backgroundObj.layer = LayerMask.NameToLayer("UI");
-        
+
         RectTransform backgroundRect = backgroundObj.AddComponent<RectTransform>();
         backgroundRect.anchorMin = Vector2.zero;
         backgroundRect.anchorMax = Vector2.one;
         backgroundRect.offsetMin = Vector2.zero;
         backgroundRect.offsetMax = Vector2.zero;
-        
+
         Image backgroundImage = backgroundObj.AddComponent<Image>();
         backgroundImage.color = new Color(0f, 0f, 0f, 0.8f);
 
         // Create text container
         GameObject textContainer = new GameObject("TextContainer");
         textContainer.transform.SetParent(backgroundObj.transform, false);
-        
+
         RectTransform textContainerRect = textContainer.AddComponent<RectTransform>();
         textContainerRect.anchorMin = Vector2.zero;
         textContainerRect.anchorMax = Vector2.one;
@@ -154,11 +156,9 @@ public class ScoreboardDisplay : MonoBehaviour
         rect.offsetMax = Vector2.zero;
 
         TextMeshProUGUI tmp = textObj.AddComponent<TextMeshProUGUI>();
-        tmp.font = TMP_Settings.defaultFontAsset;
+        tmp.font = textFont;
         tmp.fontSize = 0.2f;
-        tmp.enableAutoSizing = true;
-        tmp.fontSizeMin = 0.1f;
-        tmp.fontSizeMax = 0.4f;
+        tmp.enableAutoSizing = false;
         tmp.alignment = TextAlignmentOptions.Center;
         tmp.verticalAlignment = VerticalAlignmentOptions.Middle;
         tmp.color = Color.white;
@@ -180,14 +180,15 @@ public class ScoreboardDisplay : MonoBehaviour
         rect.offsetMax = Vector2.zero;
 
         TextMeshProUGUI tmp = sepObj.AddComponent<TextMeshProUGUI>();
-        tmp.font = TMP_Settings.defaultFontAsset;
+        tmp.font = textFont;
         tmp.fontSize = 0.2f;
+        tmp.enableAutoSizing = false;
         tmp.alignment = TextAlignmentOptions.Center;
         tmp.verticalAlignment = VerticalAlignmentOptions.Middle;
         tmp.color = Color.white;
         tmp.text = "-";
     }
-    
+
 
     private void SetScoreText(string playerScore, string botScore)
     {
@@ -198,7 +199,7 @@ public class ScoreboardDisplay : MonoBehaviour
             Debug.Log($"[ScoreboardDisplay] Setting scores: Player={playerScore}, Bot={botScore}");
         }
     }
-    
+
     public void UpdateScore(int playerScore, int botScore)
     {
         if (playerScoreText == null || botScoreText == null)
@@ -206,7 +207,7 @@ public class ScoreboardDisplay : MonoBehaviour
             Debug.LogError("[ScoreboardDisplay] Score text components are null!");
             return;
         }
-        
+
         SetScoreText(playerScore.ToString(), botScore.ToString());
         Debug.Log($"[ScoreboardDisplay] Scores updated - Player: {playerScore}, Bot: {botScore}");
     }
@@ -216,7 +217,7 @@ public class ScoreboardDisplay : MonoBehaviour
         isGameStarted = true;
         SetScoreboardVisibility(true);
         Debug.Log("[ScoreboardDisplay] Game started - Scoreboard visible");
-        
+
         // Initialize scores to 0
         UpdateScore(0, 0);
     }
