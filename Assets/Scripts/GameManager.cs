@@ -51,7 +51,9 @@ public class GameManager : MonoBehaviour
         //load adjustable settings from player prefs
         kickForce = PlayerPrefs.GetFloat("KickForce");
         usePassthrough = PlayerPrefs.GetInt("UsePassthrough") == 1;
-        audioMixer.SetFloat("MasterVolume", PlayerPrefs.GetFloat("MasterVolume"));
+        float volumeValue = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        float DBVolume = Mathf.Log10(Mathf.Max(0.0001f, volumeValue)) * 20f;
+        audioMixer.SetFloat("MasterVolume", DBVolume);
 
         scoreboardDisplay = ScoreboardDisplay.Instance;
         if (scoreboardDisplay == null)
@@ -256,6 +258,10 @@ public class GameManager : MonoBehaviour
             Rigidbody rb = ball.GetComponent<Rigidbody>();
             rb.isKinematic = false;
             rb.linearVelocity = storedBallVelocity;
+            if (storedBallVelocity.magnitude < 0.01f)
+            {
+                ResetBall(true);
+            }
         }
         isPaused = false;
         onResume?.Invoke();

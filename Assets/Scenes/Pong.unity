@@ -963,7 +963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -971,6 +971,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
@@ -986,6 +990,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1811781811}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 25636768}
+    - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartGame
       objectReference: {fileID: 0}
@@ -998,12 +1010,20 @@ PrefabInstance:
       value: ResetGame
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: OnGameStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: WinloseSpawner, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: ScoreboardDisplay, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -1015,6 +1035,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263275589035317743, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3335589673526833760, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
@@ -28251,9 +28275,9 @@ SceneRoots:
   - {fileID: 88328840}
   - {fileID: 1036416444}
   - {fileID: 1811781807}
+  - {fileID: 25636769}
   - {fileID: 841689769}
   - {fileID: 8682150521426009831}
   - {fileID: 39584719}
   - {fileID: 62167000}
   - {fileID: 1646257141}
-  - {fileID: 25636769}
