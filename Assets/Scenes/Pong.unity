@@ -1060,12 +1060,40 @@ PrefabInstance:
       value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1811781809}
     - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 25636768}
+    - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetScoreboardVisibility
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ScoreboardDisplay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900935122375511314, guid: 2567c02e4b2a4b6448b4e7c6adf91a30, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -21038,12 +21066,40 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1811781809}
     - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 25636768}
+    - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
       propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: SetScoreboardVisibility
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ScoreboardDisplay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6662581843692352355, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
+      propertyPath: onClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9167069587635738615, guid: 4bccc0d37b0287446b0b1012777b429e, type: 3}
       propertyPath: m_text

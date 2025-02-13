@@ -222,7 +222,7 @@ public class ScoreboardDisplay : MonoBehaviour
         UpdateScore(0, 0);
     }
 
-    private void SetScoreboardVisibility(bool visible)
+    public void SetScoreboardVisibility(bool visible)
     {
         if (scoreboardCanvas != null)
         {
