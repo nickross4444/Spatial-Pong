@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenu;
     public AudioMixer audioMixer;
 
-    void Start()
+    void Awake()
     {
         //non-adjustable settings
         PlayerPrefs.SetFloat("PaddleSpeed", paddleSpeed);
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
 
         //load adjustable settings from player prefs
         kickForce = PlayerPrefs.GetFloat("KickForce", 1.2f);
-        usePassthrough = PlayerPrefs.GetInt("UsePassthrough") == 1;
+        usePassthrough = PlayerPrefs.GetInt("UsePassthrough", 1) == 1;
         float volumeValue = PlayerPrefs.GetFloat("MasterVolume", 1f);
         float DBVolume = Mathf.Log10(Mathf.Max(0.0001f, volumeValue)) * 20f;
         audioMixer.SetFloat("MasterVolume", DBVolume);
